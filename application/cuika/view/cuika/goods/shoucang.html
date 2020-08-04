@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head -->
+{{include file="/public/head"}}
+<link rel="stylesheet" href="__CSS__/product-style.min.css">
+<!-- head -->
+<body>
+    <!-- 头部 -->
+  {{include file="public/header" /}}
+  <!-- 头部 -->
+
+    <!-- 收藏产品 -->
+    <main>
+        <div class="z-product-main z-product-page">
+            <section class="container">
+                <div class="content">
+                    <div class="content-1">
+                        <div class="content-product shoucang">
+                            {{volist name="good_list" id="vo"}}
+                            <div class="item">
+                                    <div class="img">
+                                        <a href="/product/detail/{{$vo.goods_id}}">
+                                            <img src="{{$vo.images}}" alt="产品图">
+                                        </a>
+                                    </div>
+                                    <div class="word">
+                                        <h3>{{$vo.title}}</h3>
+                                        <p>{{$vo.price}}</p>
+                                    </div>
+                                    <div class="shop">
+                                        <p class="btn" data-goodsid={{$vo.goods_id}}><a href="/product/option/{{$vo.goods_id}}">立即购买</a></p>
+                                    </div>
+                                    <!-- <div class="item-bottom">
+                                        <div class="success-msg">
+                                            <h3 class="title">成功加入购物车</h3>
+                                            <p>您可以<a href="" target="_blank">去购物车结算</a></p>
+                                        </div>
+                                    </div> -->
+                            </div>
+                            {{/volist}}
+                        </div>
+                    </div>
+                        
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- 收藏产品 -->
+
+
+<!-- 底部 -->
+    {{include file="public/footer" /}}
+    <!-- 底部 -->
+</body>
+</html>

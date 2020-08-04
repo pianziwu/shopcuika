@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{include file="public/head" /}}
+
+<body>
+
+<!--头部-->
+{{include file="public/header" /}}
+<!--头部-->
+
+<div class="main creat-account">
+    <h2 class="page-title">新增收货地址</h2>
+    <form id="reg_form">
+        <div class="content">
+            <div class="content-right">
+                <div class="infos-container">
+                  <div class="infos-title">
+                    <h4>配送信息</h4>
+                  </div>
+                  <div class="form-container">
+<!--                    <div class="ipt-group">-->
+<!--                      <label for="">这将是您的新 treca ID*</label>-->
+<!--                      <input type="text" placeholder="手机或邮箱">-->
+<!--                    </div>-->
+                    <div class="ipt-group">
+                      <label for="">省份 *</label>
+                      <select>
+                        <option value="">- 请选择 -</option>
+                        <option value="">-1-</option>
+                        <option value="">-2-</option>
+                        <option value="">-3-</option>
+                        <option value="">-4-</option>
+                        <option value="">-5-</option>
+                      </select>
+                    </div>
+                    <div class="ipt-group">
+                      <label for="">城市 *</label>
+                      <select>
+                        <option value="">- 请选择 -</option>
+                        <option value="">-1-</option>
+                        <option value="">-2-</option>
+                        <option value="">-3-</option>
+                        <option value="">-4-</option>
+                        <option value="">-5-</option>
+                      </select>
+                    </div>
+                    <div class="ipt-group">
+                      <label for="">县区 *</label>
+                      <select>
+                        <option value="">- 请选择 -</option>
+                        <option value="">-1-</option>
+                        <option value="">-2-</option>
+                        <option value="">-3-</option>
+                        <option value="">-4-</option>
+                        <option value="">-5-</option>
+                      </select>
+                    </div>
+                    <div class="ipt-group">
+                      <label for="">详细地址 *</label>
+                      <textarea placeholder=""></textarea>
+                    </div>
+                    <div class="ipt-group">
+                      <input type="checkbox" class="checkbox">
+                      <span>创建账户，您即同意接受一般<a href="">销售条款</a>新标签，并同意您的个人资料遵 照treca隐私政策新标签进行处理。</span>
+                    </div>
+                    <button class="sub-btn" type="submit">创建账户</button>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </form>
+</div>
+
+<!--底部-->
+{{include file="public/footer" /}}
+<!--底部-->
+
+</body>
+
+</html>

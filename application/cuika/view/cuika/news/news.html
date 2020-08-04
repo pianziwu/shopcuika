@@ -1,0 +1,63 @@
+<!DOCTYPE html >
+<html lang="en">
+
+{{include file="public/head"}}
+
+<body>
+
+{{include file="public/header"}}
+
+<div class="main news-list">
+    <div class="banner container">
+        <img src="__IMAGE__/news_list_banner.jpg" alt="">
+    </div>
+    <div class="top-sort container">
+        <ul>
+            <li class="{{if $current_catId == 0}} active {{/if}}"><a href="/news">全部新闻</a></li>
+            {{if !empty($nav_header)}}
+                {{foreach $category_list as $nav}}
+                    <li class="{{if $current_catId == $nav.id}} active {{/if}}"><a href="{{$nav.url}}">{{$nav.name}}</a></li>
+                {{/foreach}}
+            {{/if}}
+        </ul>
+    </div>
+    <section class="container">
+        {{volist name="data_list" id="vo" empty="暂无数据"}}
+            <div class="news-item clearfix">
+                <div class="img">
+                    <a href="{{$vo.url}}">
+                        <img src="{{$vo.head_img}}" alt="">
+                    </a>
+                </div>
+            <div class="text clearfix">
+                <div class="title">
+                    <a href="{{$vo.url}}">
+                        <h4>{{$vo.title}}</h4>
+                        <p>{{$vo.synopsis}}</p>
+                    </a>
+                    <div class="btn">
+                        <div class="btn-c">
+                            <a href="{{$vo.url}}"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="time">
+                    <div class="time-c">
+                        <div class="big">{{$vo.add_time_month}}</div>
+                        <span class="small">{{$vo.add_time_year}}</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        {{/volist}}
+    </section>
+    <div class="newspagination">
+        {{$page_html|raw}}
+    </div>
+</div>
+
+{{include file="public/footer"}}
+
+</body>
+</html>

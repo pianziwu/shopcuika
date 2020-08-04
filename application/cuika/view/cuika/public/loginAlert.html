@@ -1,0 +1,48 @@
+<div class="loginAlert" id="loginAlert">
+  <div class="login-box">
+    <div class="title">登录账号</div>
+    <div class="closeBtn"></div>
+    <div class="login-alert-inner">
+      <p class="noCode">还没有账号？<a class="registerBtn" href="/regInfo">立即注册</a></p>
+      <div class="name">
+        <label>登录账号</label>
+        <input type="text" class="loginName" id="loginName" placeholder="" />
+      </div>
+      <div class="name">
+        <label>登录密码</label>
+        <input type="password" class="loginPwd" id="loginPwd" placeholder="" />
+      </div>
+      <a class="forgetPwd" href="/forgetPwdInfo">忘记密码？</a>
+      <div class="loginBtn" id="loginBtn">登录</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.loginAlert .closeBtn').click(function () {
+    $('.loginAlert').fadeOut(200);
+  });
+
+  // 获取短信验证码
+  $('#loginBtn').on('click', function () {
+    var phone = $('#loginName').val()
+      , pwd = $('#loginPwd').val();
+    if (!phone.length) {
+      layer.msg('登录账号有误');
+      return false;
+    }
+    if (pwd.length < 6 || pwd.length > 18) {
+      layer.msg('密码格式 6~18 个字符之间');
+      return false;
+    }
+    sendRequest('/login', 'POST', { accounts: phone, pwd: pwd }, function (data) {
+      if (data.code == 0) {
+        layer.msg(data.msg, { time: 1000, }, function () {
+          window.location.reload();
+        });
+      } else {
+        layer.msg(data.msg);
+      }
+    });
+  });
+</script>

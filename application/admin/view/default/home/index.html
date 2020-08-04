@@ -1,0 +1,120 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+    <div class="content">
+
+        <!-- operation start -->
+        <div class="am-g am-margin-top-sm">
+            <a href="{{:MyUrl('admin/home/saveinfo')}}" class="am-btn am-btn-secondary am-radius am-btn-xs am-icon-plus"> 新增</a>
+        </div>
+        <!-- operation end -->
+
+        <!-- list start -->
+        <table class="am-table am-table-striped am-table-hover am-text-middle am-margin-top-sm">
+            <thead>
+                <tr>
+                    <th>排序</th>
+                    <th>类型</th>
+                    <th>标题</th>
+                    <th class="am-hide-sm-only">副标题</th>
+                    <th class="am-hide-sm-only">图片</th>
+                    <th>开启</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{if !empty($data_list)}}
+                    {{foreach $data_list as $v}}
+                        <tr id="data-list-{{$v.id}}" {{if $v['is_enable'] eq 2}}class="am-active"{{/if}}>
+                            <td class="am-hide-sm-only">{{$v.sort}}</td>
+                            <td>{{$v.show_type_text}}</td>
+                            <td>{{$v.title}}</td>
+                            <td class="am-hide-sm-only">{{$v.subtitle}}</td>
+                            <td class="am-hide-sm-only">
+                                {{if !empty($v['images_url'])}}
+                                    <a href="{{$v['images_url']}}" target="_blank">
+                                        <img src="{{$v['images_url']}}" class="am-radius" width="100" height="60" />
+                                    </a>
+                                {{else /}}
+                                    <span class="cr-ddd">暂无图片</span>
+                                {{/if}}
+                            </td>
+                            <td>
+                                <a href="javascript:;" class="am-icon-btn am-icon-check submit-state {{if $v['is_enable'] eq 1}}am-success{{else /}}am-default{{/if}}" data-url="{{:MyUrl('admin/home/statusUpdate')}}" data-id="{{$v.id}}" data-state="{{$v['is_enable']}}" data-is-update-status="1"></a>
+                            </td>
+                            <td>
+                                <span class="am-icon-caret-down c-p" data-am-modal="{target: '#my-popup{{$v.id}}'}"> 查看更多</span>
+                                <div class="am-popup am-radius" id="my-popup{{$v.id}}">
+                                    <div class="am-popup-inner">
+                                        <div class="am-popup-hd">
+                                            <h4 class="am-popup-title">详情内容</h4>
+                                            <span data-am-modal-close
+                                            class="am-close">&times;</span>
+                                        </div>
+                                        <div class="am-popup-bd">
+                                            <dl class="dl-content">
+                                                <dt>类型</dt>
+                                                <dd>{{$v.show_type_text}}</dd>
+
+                                                <dt>标题</dt>
+                                                <dd>{{$v.title}}</dd>
+
+                                                <dt>副标题</dt>
+                                                <dd>{{$v.subtitle}}</dd>
+
+                                                <dt>图片</dt>
+                                                <dd>
+                                                    {{if !empty($v['images_url'])}}
+                                                        <a href="{{$v['images_url']}}" target="_blank">
+                                                            <img src="{{$v['images_url']}}" class="am-radius" width="100" height="60" />
+                                                        </a>
+                                                    {{else /}}
+                                                        <span class="cr-ddd">暂无图片</span>
+                                                    {{/if}}
+                                                </dd>
+
+                                                <dt>描述</dt>
+                                                <dd>{{$v.describe}}</dd>
+
+                                                <dt>启用</dt>
+                                                <dd>{{$v.is_enable_text}}</dd>
+
+                                                <dt>排序</dt>
+                                                <dd>{{$v.sort}}</dd>
+
+                                                <dt>创建时间</dt>
+                                                <dd>{{$v.add_time}}</dd>
+
+                                                <dt>更新时间</dt>
+                                                <dd>{{$v.upd_time}}</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="view-operation">
+                                <a href="{{:MyUrl('admin/home/saveinfo', array_merge($params, ['id'=>$v['id']]))}}">
+                                    <button class="am-btn am-btn-secondary am-btn-xs am-radius am-icon-edit"> 编辑</button>
+                                </a>
+                                <button class="am-btn am-btn-danger am-btn-xs am-radius am-icon-trash-o submit-delete" data-url="{{:MyUrl('admin/home/delete')}}" data-id="{{$v.id}}"> 删除</button>
+                            </td>
+                        </tr>
+                    {{/foreach}}
+                {{/if}}
+            </tbody>
+        </table>
+        {{if empty($data_list)}}
+            <div class="table-no"><i class="am-icon-warning"></i> 没有相关数据</div>
+        {{/if}}
+        <!-- list end -->
+
+        <!-- page start -->
+        <!-- page end -->
+    </div>
+</div>
+<!-- right content end  -->
+        
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->

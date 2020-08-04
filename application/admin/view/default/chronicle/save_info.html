@@ -1,0 +1,69 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+	<div class="content">
+		<!-- form start -->
+		<form class="am-form form-validation view-save" action="{{:MyUrl('admin/chronicle/save')}}" method="POST" request-type="ajax-url" request-value="{{:MyUrl('admin/chronicle/index', $params)}}">
+			<legend>
+				<span class="am-text-default">
+					{{if empty($data['id'])}}
+						添加
+					{{else /}}
+						编辑
+					{{/if}}
+				</span>
+				<a href="{{:MyUrl('admin/chronicle/index', $params)}}" class="am-fr am-text-sm am-margin-top-xs am-icon-mail-reply"> 返回</a>
+			</legend>
+
+			<div class="am-form-group">
+				<label>年份</label>
+				<div class="am-input-group am-input-group-sm">
+					<input type="text" name="year" placeholder="年份" minlength="2" maxlength="20" data-validation-message="年份长度 2~20 个字符" class="am-form-field am-radius" value="{{$data.year|default=''}}" required />
+				</div>
+			</div>
+
+			<div class="am-form-group">
+				<label>简介</label>
+				<div class="am-input-group" style="width: 100%">
+					<input type="text" name="synopsis" placeholder="简介" minlength="2" maxlength="500" data-validation-message="简介长度 2~500 个字符" class="am-radius" value="{{$data.synopsis|default=''}}" required />
+				</div>
+			</div>
+
+			<div class="am-form-group am-form-file">
+				<label class="block">图片<span class="am-form-group-label-tips">建议尺寸：230*300（像素）</span></label>
+				<ul class="plug-file-upload-view goods-recommended-images-view person-head-img" data-form-name="head_img" data-max-number="1" data-dialog-type="images">
+					{{if !empty($data['head_img'])}}
+					<li>
+						<input type="text" name="head_img" value="{{$data.head_img}}" />
+						<img src="{{$data.head_img}}" />
+						<i>×</i>
+					</li>
+					{{/if}}
+				</ul>
+				<div class="plug-file-upload-submit" data-view-tag="ul.person-head-img">+上传图片</div>
+			</div>
+
+			<div class="am-form-group">
+				<label>跳转url地址<span class="am-form-group-label-tips">带http://或https://</span></label>
+				<input type="url" name="jump_url" placeholder="跳转url地址" data-validation-message="跳转url地址格式有误" class="am-radius" {{if !empty($data)}} value="{{$data.jump_url}}"{{/if}} />
+			</div>
+
+			<div class="am-form-group">
+			    <label class="block">是否启用</label>
+			    <input name="is_enable" value="1" type="checkbox" data-off-text="否" data-on-text="是" data-size="xs" data-on-color="success" data-off-color="default" data-handle-width="50" data-am-switch {{if !empty($data) and $data['is_enable'] eq 1}}checked="true"{{/if}} />
+			</div>
+
+			<div class="am-form-group am-form-group-refreshing">
+				<input type="hidden" name="id" value="{{$data.id|default=''}}" />
+				<button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'处理中...'}">保存</button>
+			</div>
+		</form>
+        <!-- form end -->
+	</div>
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->

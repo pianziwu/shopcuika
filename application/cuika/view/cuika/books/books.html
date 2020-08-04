@@ -1,0 +1,49 @@
+<!DOCTYPE html >
+<html lang="en">
+
+{{include file="public/head"}}
+
+<body>
+
+{{include file="public/header"}}
+  
+  <div class="books">
+    <div class="banner container">
+      <img src="__IMAGE__/books_banner.jpg" >
+    </div>
+    <div class="books-content container">
+      <div class="mode-title">
+        <div class="b-t">TRECA品牌画册</div>
+        <div class="s-t">TRECA brand picture album</div>
+      </div>
+      <div class="content">
+        <ul>
+          {{volist name="like_list.data" id="vo"}}
+          <li>
+            <a href="{{$vo.jump_url}}">
+              <div class="pic"><img src="{{$vo.head_img}}" alt=""></div>
+              <p class="name">{{$vo.title}}</p>
+            </a>
+            </li>
+          {{/volist}}
+        </ul>
+      </div>
+
+      <div class="pagetions">
+        <!-- page start -->
+        {{if !empty($like_list.data.data)}}
+        {{$page_html|raw}}
+        {{/if}}
+        <!-- page end -->
+      </div>
+    </div>
+    <div class="more-content-tip container">
+      <p>更多内容</p>
+      <p>TRECA期待与您携手开启...</p>
+    </div>
+  </div>
+
+  {{include file="public/footer"}}
+
+</body>
+</html>

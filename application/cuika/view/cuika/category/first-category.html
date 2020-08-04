@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+{{include file="public/head" /}}
+<link rel="stylesheet" href="__CSS__/product-style.min.css">
+
+<body>
+  <!-- 头部 -->
+  {{include file="/public/header"}}
+  <!-- 头部 -->
+
+  <!-- 聚合页 -->
+  <main>
+    <div class="z-product-main z-product-page">
+      <section class="container">
+
+        {{if !empty($current_category.container.container_first_background_image)}}
+        <div class="banner banner-cd">
+          <img src="{{$current_category.container.container_first_background_image}}"
+            alt="banner图">
+        </div>
+        {{/if}}
+
+        <div class="content">
+          <!-- 所有系列 -->
+          {{if !empty($data_list)}}
+          {{foreach $data_list as $key=> $category}}
+          <div class="content-1">
+            {{if $key % 2 === 0}}
+            <!-- 图片在左 -->
+            <div class="row">
+              <div class="col-md-8">
+                <div class="video">
+                  <!-- <video src="" poster="{{$category.big_images}}"></video> -->
+                  <div class="img"><img src="{{$category.big_images}}"></div>
+                  <p class="video-btn"><span></span></p>
+                </div>
+              </div>
+              <div class="col-md-4 info-layout">
+                <div class="info cd-info">
+                  <h3 class="text-uppercase">{{$category.name}}</h3>
+                  <span>{{$category.vice_name}}</span>
+                  <div>
+                    <p>{{$category.describe}}</p>
+                  </div>
+                  <a href="/category/{{$category.id}}" class="link-more">了解系列详情 ></a>
+                </div>
+              </div>
+            </div>
+            {{else}}
+            <!-- 图片在右 -->
+            <div class="row">
+              <div class="col-md-4 info-layout info-layout-2">
+                <div class="info cd-info">
+                  <h3 class="text-uppercase">{{$category.name}}</h3>
+                  <span>{{$category.vice_name}}</span>
+                  <div>
+                    <p>{{$category.describe}}</p>
+                  </div>
+                  <a href="/category/{{$category.id}}" class="link-more">了解系列详情 ></a>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="video video-2">
+                  <!-- <video src="" poster="{{$category.big_images}}"></video> -->
+                  <div class="img"><img src="{{$category.big_images}}"></div>
+                  <p class="video-btn"><span></span></p>
+                </div>
+              </div>
+            </div>
+            {{/if}}
+
+            <!-- 商品列表 -->
+            <div class="content-product">
+              {{if !empty($category.goods_info)}}
+              {{foreach $category.goods_info as $goods}}
+              <div class="item">
+                <a href="/product/detail/{{$goods.id}}">
+                  <div class="img">
+                    <img src="{{$goods.images}}" alt="产品图">
+                  </div>
+                  <div class="word">
+                    <h3>{{$goods.title}}</h3>
+                    <p>¥{{$goods.price}}</p>
+                  </div>
+                </a>
+              </div>
+              {{/foreach}}
+              {{/if}}
+            </div>
+          </div>
+          {{/foreach}}
+          {{/if}}
+        </div>
+
+      </section>
+    </div>
+  </main>
+  <!-- 聚合页 -->
+
+
+  <!-- 底部 -->
+  {{include file="/public/footer"}}
+  <!-- 底部 -->
+
+  <script>
+
+
+    $('.nav-list .nav-menu .nav-menu-btn').on("click", function () {
+      let idx = $(this).index();
+      $(this).find('.icon-height').toggleClass('down');
+      $(this).find('.icon-width').toggleClass('down');
+
+      const navSon = $(this).parent().find('.nav-son-list');
+      if (navSon.is(":hidden")) {
+        navSon.slideDown();
+      } else {
+        navSon.slideUp();
+      }
+
+    });
+
+    $('.navigation-menu .menu-item').eq(0).addClass('on').siblings().removeClass('on');
+  </script>
+</body>
+
+</html>

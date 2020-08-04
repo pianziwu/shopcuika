@@ -1,0 +1,96 @@
+<!DOCTYPE html >
+<html lang="en">
+{{include file="public/head" /}}
+<body>
+<!--头部-->
+{{include file="public/header" /}}
+<!--头部-->
+
+<div class="main jx-page">
+    <section class="s1 container">
+        <div class="txt">
+            <h4 class="b-t">TRECA的睡眠艺术</h4>
+            <p>艺术是艺术家一生的追求，是人们对所有奢侈美好的向往<br>
+                人生本该有三分之一时间属于睡眠，<br>
+                却往往忙于追求生命的荣耀、生活的富足<br>
+                TRECA所追求的睡眠艺术，是回溯生命的本质，艺术的源头，<br>
+                让人们在天然珍材与匠心工艺织造的舒适中<br>
+                拥有真正可以放下防备与停下脚步的时刻<br>
+                艺术家也携手与TRECA一起，将美好撰写成梦的温床<br>
+                如果说，一张好床是让人睡得舒适<br>
+                那么TRECA是承载起你的人生如梦</p>
+        </div>
+        <div class="content">
+            <div class="video-box">
+                <video src="https://cloud.szyuandian.com/%E5%B7%B4%E9%BB%8E%E6%AD%8C%E5%89%A7%E9%99%A2Garnier%20Montage.mp4" preload="auto" poster="__IMAGE__/jx-s1-bg.jpg" controls class="video1"></video>
+                <!-- <img src="__IMAGE__/play.png" alt="" class="play"> -->
+            </div>
+        </div>
+    </section>
+    <section class="section s2 container">
+        <div class="mode-title">
+            <div class="b-t">传统工艺与现代技术的融合</div>
+            <div class="s-t">代代相传的匠人技艺，与高科技技术的融合让消费者享受舒适、安心好睡眠</div>
+            <div class="infos">
+                <span><a href="/jx-detail">了解百年工艺 ></a></span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="video-box">
+                <video src="https://cloud.szyuandian.com/Orient%20Express%201.mp4" preload="auto" poster="__IMAGE__/jx-s2-bg.jpg" controls class="video2"></video>
+            </div>
+        </div>
+    </section>
+    <section class="section s3 container">
+        <div class="mode-title">
+            <div class="b-t">知名设计师倾力打造</div>
+            <div class="s-t">与国际知名设计师跨界合作设计至上，睡眠与梦境的艺术碰撞</div>
+            <div class="infos">
+                <span><a href="/jr-detail">走进匠人团队 ></a></span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="video-box">
+                <video src="https://cloud.szyuandian.com/%E5%B4%94%E4%BD%A7%E5%8C%A0%E5%B8%88.mp4" preload="auto" poster="__IMAGE__/jx-s3-bg.jpg" controls class="video3"></video>
+            </div>
+        </div>
+    </section>
+    <section class="section s4 container">
+        <div class="mode-title">
+            <div class="b-t">睡眠的道法自然</div>
+            <div class="s-t">甄选稀有珍贵动植物纤维带你享受前所未有的舒适体验</div>
+            <div class="infos">
+                <span><a href="/zc-detail">探索稀有珍材 ></a></span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="video-box">
+                <video src="https://cloud.szyuandian.com/9.TRECA%2080%20ANS%200114%20DEF.mp4" preload="auto" poster="__IMAGE__/jx-s4-bg.jpg" controls class="video4"></video>
+            </div>
+        </div>
+    </section>
+    <section class="s5">
+        <div class="content container">
+            <div class="mode-title">
+                <span class="border"></span>
+                <span class="border"></span>
+                <div class="b-t">百年匠心 百年崔佧</div>
+                <div class="infos">
+                    <span><a href="/brandStory">走进崔佧 ></a></span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!--底部-->
+{{include file="public/footer" /}}
+<!--底部-->
+
+<script>
+    $("video").on("play",function(){						
+	    $("video").not($(this)).trigger("pause");
+    });
+</script>
+</body>
+</html>

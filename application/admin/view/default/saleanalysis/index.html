@@ -1,0 +1,346 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+    <div class="content">
+        <div class="warpper">
+            <div class="tabs_info">
+                <ul>
+                    <li><a href="admin.php?s=/saleanalysis/index">销售量统计</a></li>
+                    <li><a href="admin.php?s=/saleanalysis/index&num=1">销售额统计</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="explanation" id="explanation">
+                    <div class="ex_tit"><i class="sc_icon"></i>
+                        <h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    </div>
+                    <ul class="explanation-list">
+                        <li>有效订单：所选时间段内除无效订单状态下的所有订单总数。</li>
+                        <li>统计所选时间段内实际付款金额走势。</li>
+                    </ul>
+                    <ul class="explanation-list">
+                        <li>统计所选时间段内实际付款金额走势。</li>
+                    </ul>
+                </div>
+                <div class="stat_order_search stat_order_search2 mt20">
+                    <form class="am-form form-validation form-search" request-type="form">
+                        <table class="so-list more-where">
+                            <tbody>
+                                <tr>
+                                    <td class="time">
+                                        <span>时间：</span>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="start_time" class="am-form-field am-input-sm am-radius Wdate" placeholder="起始时间" value="{{if !empty($params.start_time)}}{{$params.start_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM-dd 00:00:00'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+                                        <em class="text-grey">~</em>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="end_time" class="am-form-field am-input-sm am-radius Wdate" placeholder="结束时间" value="{{if !empty($params.end_time)}}{{$params.end_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM-dd 00:00:00'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+                                    </td>
+                                    <td class="search-show">
+                                        <a class="search-btn am-btn am-btn-primary am-radius am-btn-xs btn-loading-example" data-am-loading="{spinner:'circle-o-notch', loadingText:'搜索中...'}">搜索</a>
+                                        <a href="/admin.php?s=/saleanalysis/index" class="am-btn am-btn-warning am-radius am-btn-sm reset-submit">清除条件</a>
+                                    </td>
+                                    <td class="search-show" style="display: none;">
+                                        <a class="search-btn am-btn am-btn-primary am-radius am-btn-xs btn-loading-example" data-am-loading="{spinner:'circle-o-notch', loadingText:'搜索中...'}">搜索</a>
+                                        <a href="/admin.php?s=/saleanalysis/index&num=1" class="am-btn am-btn-warning am-radius am-btn-sm reset-submit">清除条件</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="query_result mt20">
+                    {{if empty($sales_number.list)}}
+                        <div class="analysis-table-no">
+                            <div class="txt">
+                                <i class="am-icon-warning"></i> 没有相关数据
+                            </div>
+                        </div>
+                        {{else /}}
+                        <div class="query_result_top">
+                            <div class="section-module"><div class="tit"><h1>总销售量：</h1><em class="red" ectype="total_money">{{$sales_number.total}}</em> 个</div></div>
+                            <div class="section-module">
+                                <div class="title_head">
+                                    <h3>销售量统计</h3>
+                                </div>
+                                <div class="module-content" id="chart_view" style="height:378px;"></div>
+                            </div>
+                        </div>
+                        <div class="query_result_top">
+                            <div class="section-module"><div class="tit"><h1>总销售额：</h1><em class="red" ectype="total_money">{{$sales_amount.total}}</em> 元</div></div>
+                            <div class="section-module">
+                                <div class="title_head">
+                                    <h3>销售额统计</h3>
+                                </div>
+                                <div class="module-content" id="amount_view" style="height:378px;"></div>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- right content end  -->
+        
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script>
+    function GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    var aNum= Number(GetQueryString('num'));
+    if(aNum){
+        $('.query_result_top').eq(aNum).addClass('show-active').siblings('.query_result_top').removeClass('show-active');
+        $('.tabs_info li').eq(aNum).addClass('curr').siblings().removeClass('curr');
+        $('.search-show').eq(aNum).show().siblings('.search-show').hide();
+        $('.explanation-list').eq(aNum).show().siblings('.explanation-list').hide();
+    }else{
+        $('.tabs_info li').eq(0).addClass('curr').siblings().removeClass('curr');
+        $('.query_result_top').eq(0).addClass('show-active').siblings('.query_result_top').removeClass('show-active');
+        $('.search-show').eq(0).show().siblings('.search-show').hide();
+        $('.explanation-list').eq(0).show().siblings('.explanation-list').hide();
+    }
+</script>
+<script type="text/javascript">
+    function turnTime(val){
+		var date = new Date(val);
+    	return date.getTime();
+	};
+    $('.search-btn').on('click',function(){
+        var params = $(".form-search").serializeArray();
+        var values = {};
+        var x;
+        for (x in params) {
+          values[params[x].name] = params[x].value;
+        };
+        if(values.start_time || values.end_time){
+			var s_time= values.start_time ? turnTime(values.start_time) : 0;
+			var e_time= values.end_time ? turnTime(values.end_time) : 0;
+			if(e_time< s_time){
+				Prompt('开始时间必须小于结束时间!');
+				return;
+			}
+		};
+        var url="";
+        if(aNum){
+            window.location.href= 'admin.php?s=/saleanalysis/index&num='+aNum+'&start_time='+values.start_time+'&end_time='+values.end_time;
+        }else{
+            window.location.href= 'admin.php?s=/saleanalysis/index&start_time='+values.start_time+'&end_time='+values.end_time;
+        }
+    });
+    $('#explanationZoom').on('click',function(){
+        if($(this).hasClass('shopUp')){
+            $(this).removeClass('shopUp');
+            $(this).parents('.ex_tit').css({'margin-bottom':'10px'}).siblings('ul').eq(aNum).show();
+            $(this).parents('.explanation').css({'width':'calc(100% - 28px)'});
+        }else{
+            $(this).addClass('shopUp');
+            $(this).parents('.ex_tit').css({'margin-bottom':'0'}).siblings('ul').eq(aNum).hide();
+            $(this).parents('.explanation').css({'width':'126px'});
+        };
+    });
+    var timedata= [],memberdata=[];
+    {{if !empty($sales_number.list)}}
+        {{foreach $sales_number.list as $k => $v}}
+            timedata.push('{{$k}}');
+            memberdata.push('{{$v}}');
+        {{/foreach}}
+        var datas = {
+            "content": {
+                "total_volume": 263,
+                "total_money": 0,
+                "title": {
+                    "text": "",
+                    "subtext": ""
+                },
+                "series": [{
+                    "name": "销量",
+                    "type": "line",
+                    "itemStyle": {
+                        "normal": {
+                            "color": "#6cbd40",
+                            "lineStyle": {
+                                "color": "#6cbd40"
+                            }
+                        }
+                    },
+                    "data": memberdata,
+                    "markPoint": {
+                        "itemStyle": {
+                            "normal": {
+                                "color": "#6cbd40"
+                            }
+                        },
+                        "data": [{
+                            "type": "max",
+                        }, {
+                            "type": "min",
+                        }]
+                    }
+                }],
+                "tooltip": {
+                    "trigger": "axis",
+                    "axisPointer": {
+                        "lineStyle": {
+                            "color": "#6cbd40"
+                        }
+                    }
+                },
+                "legend": {
+                    "data": []
+                },
+                "toolbox": {
+                    "show": true,
+                    "orient": "vertical",
+                    "right": "20",
+                    "y": "60",
+                    "feature": {
+                        "magicType": {
+                            "show": true,
+                            "type": ["line", "bar"]
+                        },
+                        "saveAsImage": {
+                            "show": true
+                        }
+                    }
+                },
+                "calculable": true,
+                "xAxis": {
+                    "type": "category",
+                    "boundaryGap": false,
+                    "axisLine": {
+                        "lineStyle": {
+                            "color": "#ccc",
+                            "width": 0
+                        }
+                    },
+                    "data": timedata,
+                },
+                "yAxis": {
+                    "type": "value",
+                    "axisLine": {
+                        "lineStyle": {
+                            "color": "#ccc",
+                            "width": 0
+                        }
+                    },
+                    "axisLabel": {
+                        "formatter": ""
+                    },
+                    "formatter": "{value}\u4e2a"
+                },
+                "xy_file": []
+            }
+        };
+        var mebAdd_chart = echarts.init(document.getElementById('chart_view'));
+        mebAdd_chart.setOption(datas.content);
+    {{/if}}
+    var aTimedata= [],aMemberdata=[];
+    {{if !empty($sales_amount.list)}}
+        {{foreach $sales_amount.list as $k => $v}}
+        aTimedata.push('{{$k}}');
+        aMemberdata.push('{{$v}}');
+        {{/foreach}}
+        var aDatas = {
+            "content": {
+                "total_volume": 263,
+                "total_money": 0,
+                "title": {
+                    "text": "",
+                    "subtext": ""
+                },
+                "series": [{
+                    "name": "销售额",
+                    "type": "line",
+                    "itemStyle": {
+                        "normal": {
+                            "color": "#6cbd40",
+                            "lineStyle": {
+                                "color": "#6cbd40"
+                            }
+                        }
+                    },
+                    "data": aMemberdata,
+                    "markPoint": {
+                        "itemStyle": {
+                            "normal": {
+                                "color": "#6cbd40"
+                            }
+                        },
+                        "data": [{
+                            "type": "max",
+                        }, {
+                            "type": "min",
+                        }]
+                    }
+                }],
+                "tooltip": {
+                    "trigger": "axis",
+                    "axisPointer": {
+                        "lineStyle": {
+                            "color": "#6cbd40"
+                        }
+                    }
+                },
+                "legend": {
+                    "data": []
+                },
+                "toolbox": {
+                    "show": true,
+                    "orient": "vertical",
+                    "right": "20",
+                    "y": "60",
+                    "feature": {
+                        "magicType": {
+                            "show": true,
+                            "type": ["line", "bar"]
+                        },
+                        "saveAsImage": {
+                            "show": true
+                        }
+                    }
+                },
+                "calculable": true,
+                "xAxis": {
+                    "type": "category",
+                    "boundaryGap": false,
+                    "axisLine": {
+                        "lineStyle": {
+                            "color": "#ccc",
+                            "width": 0
+                        }
+                    },
+                    "data": aTimedata,
+                },
+                "yAxis": {
+                    "type": "value",
+                    "axisLine": {
+                        "lineStyle": {
+                            "color": "#ccc",
+                            "width": 0
+                        }
+                    },
+                    "axisLabel": {
+                        "formatter": ""
+                    },
+                    "formatter": "{value}\u4e2a"
+                },
+                "xy_file": []
+            }
+        };
+        var amount_chart = echarts.init(document.getElementById('amount_view'));
+        amount_chart.setOption(aDatas.content);
+    {{/if}}
+    window.onresize = function (){
+        amount_chart&&amount_chart.resize();
+        mebAdd_chart&&mebAdd_chart.resize();
+    };
+</script>
+

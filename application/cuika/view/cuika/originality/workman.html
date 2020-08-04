@@ -1,0 +1,84 @@
+<!DOCTYPE html >
+<html lang="en">
+{{include file="public/head" /}}
+<script src="__JS__/swiper.min.js"></script>
+<body>
+<!--头部-->
+{{include file="public/header" /}}
+<!--头部-->
+
+<div class="workman">
+    <div class="con1">
+        <div class="container">
+            <div class="mode-title">
+                <div class="b-t">尚塔尔 · 托马斯</div>
+                <div class="zhichen">CHANTAL THOMASS</div>
+                <div class="s-t">内衣教母--风格大胆，充满魅惑，用自己设计的内衣营造一种后现代风格。</div>
+                <div class="s-t">2011年TRECA与CHANTAL THOMASS合作推出了“时装”风格，</div>
+                <div class="s-t">创造了“玫瑰床的乐趣”等一系列床垫、床头和脚架产品。</div>
+            </div>
+            <div class="content">
+                <div class="video-box">
+                    <video src="https://cloud.szyuandian.com/%E5%B4%94%E4%BD%A7%E5%8C%A0%E5%B8%88-%E6%89%98%E9%A9%AC%E6%96%AF.mp4"
+                           controls="controls" poster="__IMAGE__/workman_c1_bg.jpg"></video>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="con2">
+        <ul class="container">
+            {{volist name="data" id="vo" empty="暂无信息"}}
+                <li>
+                <div class="conteny-l">
+                    <img src="{{$vo.head_img}}" alt="">
+                </div>
+                <div class="conteny-r">
+                    <div class="cont-t">
+                        <div class="title">{{$vo.chinese_name}}</div>
+                        <div class="zhichen">{{$vo.english_name}}</div>
+                        <div class="contjie">
+                            <p>{{$vo.synopsis}}</p>
+                        </div>
+                    </div>
+                    <div class="sj-box">
+                        <div class="sjtite">设计作品</div>
+                        <div class="img-box">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    {{volist name="vo['photo']" id="photo"}}
+                                        <div class="swiper-slide">
+                                            <img src="{{$photo}}" alt="">
+                                        </div>
+                                    {{/volist}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {{/volist}}
+        </ul>
+    </div>
+
+</div>
+
+<!--底部-->
+{{include file="public/footer" /}}
+<!--底部-->
+
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 3,
+        spaceBetween: 10,
+        breakpoints: {
+            768: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+            }
+        }
+    });
+
+
+</script>
+</body>
+</html>

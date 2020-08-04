@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+{{include file="public/head" /}}
+{{if empty($cart_list)}}
+<script>
+  window.location.href = "/";
+</script>
+{{/if}}
+
+<body>
+  {{include file="public/header" /}}
+
+  <div class="main zf-page">
+    <h2 class="page-title">你的送货地址是哪里？</h2>
+    <form>
+      <div class="content address-content">
+        <div class="content-left">
+          <div class="infos-container">
+            <div class="form-container">
+              <div class="ipt-group">
+                <label for="">选择地址：</label>
+                {{volist name="user_address_list" id="vo"}}
+                <div class="ipt-content address-list" data-id="{{$vo.id}}" data-default="{{$vo.is_default}}"
+                  data-provincename="{{$vo.province_name}}" data-cityname="{{$vo.city_name}}"
+                  data-countyname="{{$vo.county_name}}" data-province="{{$vo.province}}" data-city="{{$vo.city}}"
+                  data-county="{{$vo.county}}">
+                  <p class="name">{{$vo.name}}</p>
+                  <p class="addr" data-address="{{$vo.address}}">{{$vo.province_name}}{{$vo.city_name}}{{$vo.county_name}}{{$vo.address}}</p>
+                  <p class="tel">{{$vo.tel}}</p>
+                  <div class="edit-toggle">编辑</div>
+                  <div class="edit-delete">删除</div>
+                </div>
+                {{/volist}}
+                <a class="add-addr" id="addAddr">新增地址</a>
+              </div>
+              <div class="ipt-group">
+                <label for="">配送方式</label>
+                <div class="ipt-content">
+                  <p class="name">标准配送<span>¥0.00</span></p>
+                </div>
+              </div>
+              <a class="next-btn" href="javascript:;">继续选择配送选项</a>
+            </div>
+          </div>
+        </div>
+        <div class="content-right">
+          <div class="title">订单明细</div>
+          <div class="product-list">
+            {{volist name="cart_list" id="vo"}}
+            <div class="product-item">
+              <div class="product-img">
+                <img src="{{$vo.images}}" alt="">
+              </div>
+              <div class="product-infos">
+                <h4 class="product-name">{{$vo.title}}</h4>
+                <div class="options">
+                  <h4>规格：</h4>
+                  {{volist name="$vo.spec" id = "sp"}}
+                  <p>{{$sp.type}}: <span>{{$sp.value}}</span></p>
+                  {{/volist}}
+                </div>
+                <p class="price">¥{{$vo.price}}<span>&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;{{$vo.stock}}</span></p>
+              </div>
+            </div>
+            {{/volist}}
+          </div>
+          <div class="price-total">
+            <p class="xj">小计 <span>¥{{$base.total_price}}</span></p>
+            <p class="ps">配送 <span>¥0.00</span></p>
+          </div>
+          <div class="price-total">
+            <p class="all">总计 <span>¥{{$base.total_price}}</span></p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="addAlert">
+      <div class="bianjiyemm">
+        <div class="closeBtn"></div>
+        <div class="mingzi">
+          <input type="text" class="addUsername" placeholder="姓名" />
+        </div>
+        <div class="shjhm">
+          <input type="text" class="addPhone" placeholder="收件人电话" />
+        </div>
+        <div class="shengf">
+          <select class="addProvince" id="param_province"
+            onchange="provincechange(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
+            <option value="-1">请选择省份</option>
+          </select>
+        </div>
+        <div class="chengshi">
+          <select class="addCity" id="param_city"
+            onchange="accessToStores(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
+            <option value="-1">请选择城市</option>
+          </select>
+        </div>
+        <div class="chengshi">
+          <select class="addCounty" id="param_counties">
+            <option value="-1">请选择县区</option>
+          </select>
+        </div>
+        <div class="xangxi">
+          <textarea class="addAddressTxt" placeholder="详细地址"></textarea>
+        </div>
+        <div class="baocun addBtn">保存</div>
+        <div class="baocun editBtn" style="display: none;">确认修改</div>
+      </div>
+    </div>
+  </div>
+  {{include file="public/footer" /}}
+  <script>
+    var edit_id=undefined;
+    var defAddress_id = '';
+    if ($('.address-list')) {
+      defAddress_id = $('.address-list').eq(0).attr('data-id');
+    };
+    $('.next-btn').on('click', function () {
+      if (defAddress_id) {
+        window.location.href = "/pay/step2";
+      } else {
+        let txt = "您还没有填写默认地址，请添加默认地址后继续。";
+        layer.msg(txt);
+      }
+    });
+
+    $('.addAlert .closeBtn').click(function () {
+      $('.addAlert').fadeOut(200);
+    })
+
+    $('#addAddr').click(function () {
+      $('.addBtn').show();
+      $('.editBtn').hide();
+      $('.addAlert').fadeIn(200);
+      $('.addUsername').val('');
+      $('.addPhone').val('');
+      $('.addProvince option:selected').text('请选择省份').val('');
+      $('.addCity option:selected').text('请选择城市').val('');
+      $('.addCounty option:selected').text('请选择县/区').val('');
+      $('.addAddressTxt').val('');
+    })
+
+    // 省份初始化
+    $(function () {
+      sendRequest("/region", 'GET', { 'pid': 0 }, function (data) {
+        let dataLists = data.data;
+        let provincesDoms = '';
+        for(var i = 0; i < dataLists.length; i++){
+          provincesDoms += "<option value="+dataLists[i].id+">"+dataLists[i].name+"</option>"
+        }
+        $('#param_province').append(provincesDoms);
+      });
+    })
+    // 清除城市选项optinos
+    function removeAll() {
+      var obj = document.getElementById('param_city');
+      var obj = document.getElementById('param_counties');
+      param_city.options.length = 0;
+      param_counties.options.length = 0;
+    }
+    //获取城市
+    function provincechange(id, text) {
+      removeAll()
+      sendRequest("/region", 'GET', { 'pid': id }, function (data) {
+        let dataLists = data.data;
+        dataLists.unshift({ name: "请选择城市", id: "" })
+        for (var i = 0; i < dataLists.length; i++) {
+          var newOption = document.createElement("option");
+          newOption.text = dataLists[i].name;
+          newOption.value = dataLists[i].id;
+          document.getElementById("param_city").add(newOption);
+        }
+      });
+    }
+    function accessToStores(id, text) {
+      sendRequest("/region", 'GET', { 'pid': id }, function (data) {
+        let dataLists = data.data;
+        dataLists.unshift({ name: "请选择县/区", id: "" })
+        for (var i = 0; i < dataLists.length; i++) {
+          var newOption = document.createElement("option");
+          newOption.text = dataLists[i].name;
+          newOption.value = dataLists[i].id;
+          document.getElementById("param_counties").add(newOption);
+        }
+      });
+    }
+
+    // 添加
+    $('.addBtn').click(function () {
+      var addUsername = $('.addUsername').val(),
+        addPhone = $('.addPhone').val(),
+        addProvince = $('.addProvince option:selected').val(),
+        addCity = $('.addCity option:selected').val(),
+        addCounty = $('.addCounty option:selected').val(),
+        addAddressTxt = $('.addAddressTxt').val();
+
+      if (addUsername == '') {
+        layer.msg('姓名不能为空');
+        return false;
+      }
+      if (!(/^1[3456789]\d{9}$/.test(addPhone))) {
+        layer.msg('手机号码有误，请重填');
+        return false;
+      }
+      if (addProvince == '-1' || addProvince == undefined || addCity == '-1' || addCity == undefined ) {
+        layer.msg('请选择完整的地址');
+        return false;
+      }
+
+      if (addAddressTxt == '') {
+        layer.msg('详情地址不能为空');
+        return false;
+      }
+      sendRequest('/address', 'POST', { name: addUsername, tel: addPhone, province: addProvince, city: addCity, county: addCounty, address: addAddressTxt }, function (data) {
+        if (data.code == 0) {
+          layer.msg(data.msg, { time: 1000, }, function () {
+            window.location.reload();
+          });
+        } else {
+          layer.msg(data.msg);
+        }
+      });
+    })
+    //地址选择
+    $('.address-list').click(function(){
+      edit_id= $(this).data('id');
+      var addUsername = $(this).find('.name').text(),
+        addPhone = $(this).find('.tel').text(),
+        addProvince = $(this).data('province'),
+        addCity = $(this).data('city'),
+        addCounty = $(this).data('county'),
+        addAddressTxt = $(this).find('.addr').data('address');
+      sendRequest('/address', 'POST', { name: addUsername, tel: addPhone, province: addProvince, city: addCity, county: addCounty, address: addAddressTxt, id: edit_id, is_default :1 }, function (data) {
+        if (data.code == 0) {
+          window.location.reload();
+        } else {
+          layer.msg(data.msg);
+        }
+      });
+    });
+    //编辑
+    $('.edit-toggle').click(function (event) {
+      $('.addBtn').hide();
+      $('.editBtn').show();
+      edit_id= $(this).parent('.address-list').data('id');
+      var addUsername = $(this).parent('.address-list').find('.name').text(),
+        addPhone = $(this).parent('.address-list').find('.tel').text(),
+        addProvinceName = $(this).parent('.address-list').data('provincename'),
+        addCityName = $(this).parent('.address-list').data('cityname'),
+        addCountyName = $(this).parent('.address-list').data('countyname'),
+        addProvince = $(this).parent('.address-list').data('province'),
+        addCity = $(this).parent('.address-list').data('city'),
+        addCounty = $(this).parent('.address-list').data('county'),
+        addAddressTxt = $(this).parent('.address-list').find('.addr').data('address');
+      $('.addAlert').fadeIn(0);
+      $('.addAlert .addUsername').val(addUsername);
+      $('.addAlert .addPhone').val(addPhone);
+      $('.addAlert .addProvince option:selected').text(addProvinceName).val(addProvince);
+      $('.addAlert .addCity option:selected').text(addCityName).val(addCity);
+      $('.addAlert .addCounty option:selected').text(addCountyName).val(addCounty);
+      $('.addAlert .addAddressTxt').val(addAddressTxt);
+      event.stopPropagation();
+    })
+
+    // 编辑保存
+    $('.editBtn').click(function () {
+      var addUsername = $('.addUsername').val(),
+        addPhone = $('.addPhone').val(),
+        addProvince = $('.addProvince option:selected').val(),
+        addCity = $('.addCity option:selected').val(),
+        addCounty = $('.addCounty option:selected').val(),
+        addAddressTxt = $('.addAddressTxt').val();
+      if (addUsername == '') {
+        layer.msg('姓名不能为空');
+        return false;
+      }
+      if (!(/^1[3456789]\d{9}$/.test(addPhone))) {
+        layer.msg('手机号码有误，请重填');
+        return false;
+      }
+      if (addProvince == '-1' || addProvince == undefined || addCity == '-1' || addCity == undefined ) {
+        layer.msg('请选择完整的地址');
+        return false;
+      }
+
+      if (addAddressTxt == '') {
+        layer.msg('详情地址不能为空');
+        return false;
+      }
+
+      sendRequest('/address', 'POST', { name: addUsername, tel: addPhone, province: addProvince, city: addCity, county: addCounty, address: addAddressTxt, id: edit_id }, function (data) {
+        if (data.code == 0) {
+          layer.msg(data.msg, { time: 1000, }, function () {
+            window.location.reload();
+          });
+        } else {
+          layer.msg(data.msg);
+        }
+      });
+    })
+
+    // 删除
+    $('.edit-delete').click(function (event) {
+      event.stopPropagation();
+      var id = $(this).parent('.address-list').data('id');
+      layer.confirm('确定删除？', function (index) {
+        sendRequest('/address', 'DELETE', { id: id }, function (data) {
+          if (data.code == 0) {
+            layer.msg(data.msg, { time: 1000, }, function () {
+              window.location.reload();
+            });
+          }
+        })
+        layer.close(index);
+      })
+    })
+
+    // 选择默认地址
+
+    // $('.address-list').click(function(){
+    //   var sName = $(this).find('.name').text(),
+    //     sTel = $(this).find('.tel').text(),
+    //     sAddr = $(this).find('.addr').text(),
+    //     sProvince = $(this).data('province'),
+    //     sCity = $(this).data('city'),
+    //     sCounty = $(this).data('county'),
+    //     id = $(this).data('id');
+
+    //   sendRequest('/address', 'POST', { name: sName, tel: sTel, province: sProvince, city: sCity, county: sCounty, address: sAddr, id: id }, function (data) {
+    //     // if (data.code == 0) {
+    //     //   layer.msg(data.msg, { time: 1000, }, function () {
+    //     //     window.location.reload();
+    //     //   });
+    //     // } else {
+    //     //   layer.msg(data.msg);
+    //     // }
+    //     window.location.reload();
+    //     console.log(data)
+    //   });
+    // })
+  </script>
+</body>
+</html>

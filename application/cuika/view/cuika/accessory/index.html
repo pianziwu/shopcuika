@@ -1,0 +1,170 @@
+<!DOCTYPE html >
+<html lang="en">
+{{include file="public/head" /}}
+<link rel="stylesheet" href="__CSS__/product-style.min.css">
+<body>
+<!-- 头部 -->
+{{include file="/public/header"}}
+<!-- 头部 -->
+
+  <!-- 配件聚合页 -->
+  <main>
+    <div class="z-product-main z-product-page">
+      <section class="container">
+        <div class="banner banner-pj">
+          <img src="__IMAGE__/pj_index_banner.jpg" alt="banner图">
+        </div>
+
+        <div class="content">
+          <!-- 枕头系列 -->
+          <div class="content-1">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="video">
+                    <video src="" poster="__IMAGE__/pj_index_bg01.jpg"></video>
+                    <p class="video-btn"><span></span></p>
+                  </div>
+                </div>
+                <div class="col-md-4 info-layout">
+                  <div class="info">
+                    <h3 class="text-uppercase">枕头系列</h3>
+                    <!-- <div>
+                        <p>联合知名设计师倾力打造，将艺术美学与传统工艺融合，让您感受TRECA匠心传承的完美体验。</p>
+                    </div> -->
+                  <a href="/accessory/pillow?category_id={{$data_list.category_id.pillow}}" class="link-more">了解系列详情 ></a>
+                  </div>
+                </div>
+              </div>
+      
+              <div class="content-product">
+                {{if !empty($data_list.pillow.data)}}
+                {{foreach $data_list.pillow.data as $goods}}
+                <div class="item">
+                  <a href="/product/detail/{{$goods.id}}">
+                    <div class="img">
+                      <img src="{{$goods.images}}" alt="产品图">
+                    </div>
+                    <div class="word">
+                      <h3>{{$goods.title}}</h3>
+                      <p>¥{{$goods.price}}</p>
+                    </div>
+                  </a>
+                </div>
+                {{/foreach}}
+                {{/if}}
+
+              </div>
+          </div>
+          <!-- 床头柜系列 -->
+          <div class="content-1">
+            
+              <div class="row">
+                <div class="col-md-4 info-layout info-layout-2">
+                  <div class="info">
+                    <h3 class="text-uppercase">床头柜系列</h3>
+                    <!-- <div>
+                        <p>甄选高品质皇室面料，采用3D立体缝绣工艺，在家感受皇室宫廷的奢华。</p>
+                    </div> -->
+                  <a href="/accessory/bedside?category_id={{$data_list.category_id.bedside}}" class="link-more">了解系列详情 ></a>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="video video-2">
+                    <video src="" poster="__IMAGE__/pj_index_bg02.jpg"></video>
+                    <p class="video-btn"><span></span></p>
+                  </div>
+                </div>
+              </div>
+      
+              <div class="content-product">
+               
+                {{if !empty($data_list.bedside.data)}}
+                {{foreach $data_list.bedside.data as $goods}}
+                <div class="item">
+                  <a href="/product/detail/{{$goods.id}}">
+                    <div class="img">
+                      <img src="{{$goods.images}}" alt="产品图">
+                    </div>
+                    <div class="word">
+                      <h3>{{$goods.title}}</h3>
+                      <p>¥{{$goods.price}}</p>
+                    </div>
+                  </a>
+                </div>
+                {{/foreach}}
+                {{/if}}
+
+              </div>
+          </div>
+          <!-- 床尾凳系列 -->
+          <div class="content-1">
+              
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="video">
+                      <video src="" poster="__IMAGE__/pj_index_bg03.jpg"></video>
+                      <p class="video-btn"><span></span></p>
+                    </div>
+                  </div>
+                  <div class="col-md-4 info-layout">
+                    <div class="info">
+                      <h3 class="text-uppercase">床尾凳系列</h3>
+                      <!-- <div>
+                          <p>一针一线的温暖缝制，面料对花精准细密，实现在主题、感觉、外观和原料等方面的极致奢华。</p>
+                      </div> -->
+                  <a href="/accessory/bed-chair?category_id={{$data_list.category_id.bed_chair}}" class="link-more">了解系列详情 ></a>
+                    </div>
+                  </div>
+                </div>
+        
+                <div class="content-product">
+                  
+                  {{if !empty($data_list.bed_chair.data)}}
+                  {{foreach $data_list.bed_chair.data as $goods}}
+                  <div class="item">
+                    <a href="/product/detail/{{$goods.id}}">
+                      <div class="img">
+                        <img src="{{$goods.images}}" alt="产品图">
+                      </div>
+                      <div class="word">
+                        <h3>{{$goods.title}}</h3>
+                        <p>¥{{$goods.price}}</p>
+                      </div>
+                    </a>
+                  </div>
+                  {{/foreach}}
+                  {{/if}}
+                  
+                </div>
+            </div>
+        </div>
+      </section>
+    </div>
+  </main>
+<!-- 配件聚合页 -->
+
+
+<!-- 底部 -->
+{{include file="/public/footer"}}
+<!-- 底部 -->
+
+<script>
+
+
+    $('.nav-list .nav-menu .nav-menu-btn').on("click", function () {
+        let idx = $(this).index();
+        $(this).find('.icon-height').toggleClass('down');
+        $(this).find('.icon-width').toggleClass('down');
+
+        const navSon = $(this).parent().find('.nav-son-list');
+        if (navSon.is(":hidden")) {
+            navSon.slideDown();
+        } else {
+            navSon.slideUp();
+        }
+
+    });
+
+</script>
+</body>
+</html>

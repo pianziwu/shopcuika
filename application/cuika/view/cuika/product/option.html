@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+{{include file="public/head" /}}
+
+<link rel="stylesheet" type="text/css" href="__CSS__/common/lib/assets/css/amazeui.css?v=20200202" />
+<link rel="stylesheet" type="text/css" href="__CSS__/common/lib/amazeui-switch/amazeui.switch.css?v=20200202" />
+<link rel="stylesheet" type="text/css" href="__CSS__/common/lib/amazeui-chosen/amazeui.chosen.css?v=20200202" />
+<link rel="stylesheet" type="text/css" href="__CSS__/common/lib/cropper/cropper.min.css?v=20200202" />
+<link rel="stylesheet" type="text/css" href="__CSS__/common/lib/amazeui-tagsinput/amazeui.tagsinput.css?v=20200202" />
+
+<link rel="stylesheet" type="text/css" href="__CSS__/common/css/common.css?v=20200202" />
+<link rel="stylesheet" type="text/css" href="__CSS__/index/default/css/common.css?v=20200202" />
+<link rel="stylesheet" type="text/css" href="__CSS__/index/default/css/goods.css?v=20200202" />
+
+<script type="text/javascript">
+	var __root__ = '/';
+	var __my_url__ = 'http://treca.51-share.com/';
+	var __public__ = '/';
+	var __default_theme__ = 'default';
+	var __modal_login_url__ = '';
+	var __attachment_host__ = 'http://treca.51-share.com';
+	var __seo_url_suffix__ = 'html';
+	var __user_id__ = 0;
+	var __price_symbol__ = '￥';
+</script>
+
+<body>
+	{{include file="public/header" /}}
+
+	<div class="goods-detail main" data-id="{{$data_list.goods.id}}"
+		data-spec-detail-ajax-url="/product/spec-detail"
+		data-spec-type-ajax-url="/product/spec-type">
+		<!-- 轮播 -->
+		<div class="scoll">
+			<div class="slider-content">
+				<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{"directionNav":false}'>
+					<ul class="am-slides">
+						{{if !empty($data_list['photo'][0])}}
+						<li><img src="{{$data_list['photo'][0]['images']}}" title="" /></li>
+						{{/if}}
+					</ul>
+				</div>
+
+				<!-- 视频 -->
+				<!-- <i class="am-icon-play-circle-o goods-video-submit-start"></i>
+				<i class="goods-video-submit-close none">&times;</i>
+				<video class="goods-video-container none"
+					src="http://shop.51-share.com/upload/video/goods/2019/01/14/1547458876723311.mp4" controls="controls"
+					preload="auto">
+					your browser does not support the video tag
+				</video> -->
+			</div>
+		</div>
+		<!--
+		规格请求方式：
+		网址
+		shopxo.com/product/spec-detail
+
+		参数 post
+		id:77
+		spec[0][type]:尺寸
+		spec[0][value]:200x200
+		//spec[1][type]:颜色
+		//spec[1][value]:白色 -->
+
+
+		<!-- 基础信息 -->
+		<div class="item-inform am-container">
+			<!-- pc放大镜 / 左侧 -->
+			<div class="clearfix-left" id="clearcontent">
+				<div class="box">
+					{{if !empty($data_list['photo'][0])}}
+					<div class="tb-booth tb-pic tb-s310">
+						<img src="{{$data_list['photo'][0]['images']}}" alt="" rel="{{$data_list['photo'][0]['images']}}"
+							class="jqzoom" />
+					</div>
+					{{/if}}
+					<ul class="tb-thumb" id="thumblist">
+						{{if !empty($data_list['photo'])}}
+						{{foreach $data_list.photo as $key=>$row}}
+						<li class="tb-selected">
+							<div class="tb-pic tb-s40">
+								<a href="javascript:;">
+									<img src="{{$row.images}}" mid="{{$row.images}}" big="{{$row.images}}" class="tb-s40" />
+								</a>
+							</div>
+						</li>
+						{{/foreach}}
+						{{/if}}
+					</ul>
+
+					<!-- 视频 -->
+					<!-- <i class="am-icon-play-circle-o goods-video-submit-start"></i>
+					<i class="goods-video-submit-close none">&times;</i>
+					<video class="goods-video-container none"
+						src="http://shop.51-share.com/upload/video/goods/2019/01/14/1547458876723311.mp4" controls="controls"
+						preload="auto">
+						your browser does not support the video tag
+					</video> -->
+
+					<!-- 商品页面相册内部钩子 -->
+				</div>
+			</div>
+
+			<!-- 右侧 -->
+			<div class="clearfix-right">
+				<!--规格-->
+				<!--名称-->
+				<div class="tb-detail-hd">
+					{{if !empty($data_list.goods.title)}}
+					<h1 class="detail-title am-margin-bottom-xs">
+						{{$data_list.goods.title}}
+						<!-- 商品页面基础信息标题里面钩子 -->
+					</h1>
+					{{/if}}
+				</div>
+				<div class="tb-detail-list">
+					<!-- 基础面板 -->
+					<div class="tb-detail-price">
+						<!-- 原价 -->
+						{{if !empty($data_list['goods']['original_price']) and $data_list['goods']['original_price'] gt 0 }}
+						<div class="items price">
+							<dt>原价</dt>
+							<dd>
+								<b class="goods-original-price original-price-value"
+									data-original-price="{{$data_list.goods.original_price}}">￥{{$data_list.goods.original_price}}</b>
+							</dd>
+						</div>
+						{{/if}}
+
+						<!-- 售价 -->
+						<div class="items price iteminfo_mktprice">
+							<dt>销售价</dt>
+							<dd>
+								<em>￥</em>
+								{{if !empty($data_list.goods.price)}}
+								<b class="goods-price" data-original-price="{{$data_list.goods.price}}">{{$data_list.goods.price}}</b>
+								{{/if}}
+							</dd>
+						</div>
+					</div>
+
+					<!--销量-->
+					<ul class="tm-ind-panel">
+						<li class="tm-ind-item">
+							<div class="tm-indcon" style="text-align: left;"><span class="tm-label">规格</span></div>
+						</li>
+					</ul>
+
+					<!--各种规格-->
+					<dl class="iteminfo_parameter sys_item_specpara">
+						<dd>
+							<!--操作页面-->
+							<div class="theme-popover">
+								<div class="theme-popbod dform">
+									<form class="theme-signin" name="loginform" action="javascript:;">
+										<div class="theme-signin-left">
+										{{if !empty($specifications['choose'])}}
+										{{foreach $specifications.choose as $key=>$spec}}
+										{{if !empty($spec['value'])}}
+											<div class="theme-options sku-items">
+												<div class="cart-title">{{$spec.name}}</div>
+												<ul>
+													{{foreach $spec.value as $keys=>$specs}}
+													<li
+														class="sku-line {{if !empty($specs['images'])}} sku-line-images{{/if}} {{if $key gt 0}} sku-dont-choose{{/if}} {{if isset($specs['is_only_level_one']) and isset($specs['inventory']) and $specs['inventory'] elt 0}} sku-items-disabled{{/if}}"
+														data-type-value="{{$spec.name}}" data-value="{{$specs.name}}"
+														{{if !empty($specs['images'])}} data-type-images="{{$specs.images}}" {{/if}}>
+														{{if !empty($specs['images'])}}
+														<img src="{{$specs.images}}" />
+														{{/if}}
+														{{$specs.name}}<i></i>
+													</li>
+													{{/foreach}}
+												</ul>
+											</div>
+										{{/if}}
+										{{/foreach}}
+										{{/if}}
+										<div class="theme-options">
+											<div class="cart-title number">数量</div>
+											<dd>
+												
+											<div class="am-input-group am-input-group-sm number-tag">
+												<button class="am-input-group-label" id="min" type="button">-</button>
+												<input type="number" class="am-form-field" value="1" id="text_box" min="1" max="{{$data_list.goods.inventory}}"
+												data-original-max="{{$data_list.goods.inventory}}" />
+												<button class="am-input-group-label" id="add" type="button">+</button>
+											</div>
+												
+											<span class="tb-hidden stock-tips">库存<span class="stock" data-original-stock="{{$data_list.goods.inventory}}" data-min-limit="1"
+													data-max-limit="0" data-unit="{{$data_list.goods.inventory_unit}}">{{$data_list.goods.inventory}}</span>{{$data_list.goods.inventory_unit}}</span>
+											</dd>
+										</div>
+										<!-- <div class="btn-op">
+											<span class="btn am-btn am-btn-default confirm login-event" data-type="cart"
+												data-ajax-url="http://shop.51-share.com/index.php?s=/index/cart/save.html">确认</span>
+											<span class="btn close am-btn am-btn-danger cancel">取消</span>
+										</div> -->
+									</div>
+									<!-- <div class="theme-signin-right">
+										<div class="img-info">
+											<img src="" />
+										</div>
+										<div class="text-info">
+											<span class="price-now" data-original-price="4500.00-6800.00">￥4500.00-6800.00</span>
+										</div>
+									</div> -->
+									</form>
+								</div>
+							</div>
+						</dd>
+					</dl>
+				</div>
+
+	<!-- 购买导航 -->
+	<div class="buy-nav ">
+		<!-- 站点模式 1 展示型 -->
+		<div class="submit">
+			<div class="clearfix tb-btn tb-btn-buy buy-event buy-submit addFixedBtn shopBtn" data-type="buy" data-goodsid="{{$data_list.goods.id}}">
+				<button title="点此按钮到下一步确认购买信息" href="javascript:;" type="button">立即购买</button>
+			</div>
+		</div>
+		<div class="submit">
+			<div class="clearfix tb-btn tb-btn-basket buy-event cart-submit addFixedBtn" data-type="cart" data-goodsid="{{$data_list.goods.id}}"
+				data-ajax-url="http://shop.51-share.com/index.php?s=/index/cart/save.html">
+				<button title="加入购物车" href="javascript:;" type="button"><i></i>加入购物袋</button>
+			</div>
+		</div>
+
+		<!-- 购买表单 -->
+		<!-- <form action="http://shop.51-share.com/index.php?s=/index/buy/index.html" method="post" class="buy-form">
+			<input type="hidden" name="goods_id" value="2" />
+			<input type="hidden" name="buy_type" value="goods" />
+			<input type="hidden" name="stock" value="1" />
+			<input type="hidden" name="spec" value="" />
+			<button type="submit"></button>
+		</form> -->
+	</div>
+	</div>
+	</div>
+	</div>
+
+	{{include file="public/footer" /}}
+
+	<script type='text/javascript' src="__CSS__/common/lib/assets/js/amazeui.min.js?v=20200202"></script>
+
+	<!-- 图片放大镜 -->
+	<script type='text/javascript' src="__CSS__/common/lib/imagezoom/jquery.imagezoom.min.js?v=20200202"></script>
+
+	<!-- amazeui插件 -->
+	<script type='text/javascript' src="__CSS__/common/lib/amazeui-switch/amazeui.switch.min.js?v=20200202"></script>
+	<script type='text/javascript' src="__CSS__/common/lib/amazeui-chosen/amazeui.chosen.min.js?v=20200202"></script>
+	<script type='text/javascript' src="__CSS__/common/lib/amazeui-dialog/amazeui.dialog.min.js?v=20200202"></script>
+	<script type='text/javascript'
+		src="__CSS__/common/lib/amazeui-tagsinput/amazeui.tagsinput.min.js?v=20200202"></script>
+
+	<!-- 图像裁剪插件 -->
+	<script type='text/javascript' src="__CSS__/common/lib/cropper/cropper.min.js?v=20200202"></script>
+
+	<!-- 项目公共 -->
+	<script type='text/javascript' src="__CSS__/common/js/common.js?v=20200202"></script>
+	<script type='text/javascript' src="__CSS__/index/default/js/common.js?v=20200202"></script>
+
+	<script type='text/javascript' src="__CSS__/index/default/js/goods.js?v=20200202"></script>
+
+
+	<script>
+
+		//输入数量
+   
+
+	</script>

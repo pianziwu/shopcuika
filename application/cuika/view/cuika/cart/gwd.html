@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+{{include file="public/head" /}}
+
+<body>
+  {{include file="public/header" /}}
+  <div class="main  gud-page">
+    {{empty name="cart_list"}}
+    <div class="gwd-page">
+      <div class="title">你的购物袋中没有商品。</div>
+      <p>所有订单均可享受免费送货和退货服务。</p>
+      <div class="btns">
+        <a class="shop" href="/mattress">继续购物</a>
+      </div>
+    </div>
+    {{else /}}
+    <div class="gwd-page empty-cart" style="display: none;">
+      <div class="title">你的购物袋中没有商品。</div>
+      <p>所有订单均可享受免费送货和退货服务。</p>
+      <div class="btns">
+        <a class="shop" href="/mattress">继续购物</a>
+      </div>
+    </div>
+    <div class="full-cart">
+      <div class="total in980">
+        <p> 你的购物袋总计RMB <span>{{$base.total_price}}</span></p>
+        <p>所有订单均可享受免费送货和退货服务。</p>
+        <a href="/pay/step1">结算</a>
+      </div>
+      {{volist name="cart_list" id="vo" }}
+      <div class="prod-price in980">
+        <div class="prod-price-l">
+          <img src="{{$vo.images}}" alt="商品图片">
+        </div>
+        <div class="prod-price-r">
+          <div class="prod-price-t">
+            <div class="prod-price-t1">
+              <a href="/product/detail/{{$vo.goods_id}}">
+                {{$vo.title}}
+              </a>
+              <div class="options">
+                <h4>规格：</h4>
+                {{volist name="$vo.spec" id = "sp"}}
+                <p>{{$sp.type}}: <span>{{$sp.value}}</span></p>
+                {{/volist}}
+              </div>
+            </div>
+            <div class="prod-price-layout">
+              <div class="prod-price-t2 " data-id="{{$vo.id}}" data-goodsid="{{$vo.goods_id}}">
+
+                <div class="count-box">
+                  <span class="count-btn-l goodsClassName{{$vo.id}}" onclick="changeStock('{{$vo.id}}')">-</span>
+                  <input class="count-text count-text{{$vo.id}}" data-max="{{$vo.buy_max_number}}" value="{{$vo.stock}}"
+                    onchange="onchangeVal('{{$vo.id}}')" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                    onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                  <span class="count-btn-r goodsClassNameMore{{$vo.id}}"
+                    onclick="changeStockMore('{{$vo.id}}')">+</span>
+                </div>
+              </div>
+              <div class="prod-price-t3" id="total1">
+                <p class="pppp"> RMB <span>{{$vo.price}}</span></p>
+                <a data-id="{{$vo.id}}">移除</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/volist}}
+      <div class="the-sum in980">
+        <div class="total-price-box">
+          <div class="freight">
+            <p>运费</p>
+            <p>免费</p>
+          </div>
+          <div class="price-sub">
+            <div class="price-sub-p">
+              <p>总计</p>
+              <p>RMB <span>{{$base.total_price}}</span></p>
+            </div>
+            <a href="/pay/step1">结算</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/empty}}
+    <div class="recommend container">
+      <p>为您推荐</p>
+      <a href="/">选购更多产品 ></a>
+
+      <div class="layout-content">
+        <div class="layout">
+          <!-- 产品推荐 开始 -->
+          {{if !empty($recommend_list)}}
+          {{foreach $recommend_list as $re_value}}
+          <div class="item">
+            <div class="img">
+              <a href="/product/detail/{{$re_value.id}}">
+                <img src="{{$re_value.home_recommended_images}}" alt="推荐图片">
+              </a>
+            </div>
+            <div class="word">
+              <h3 class="title">{{$re_value.title}} ></h3>
+              <p>￥{{$re_value.price}}</p>
+            </div>
+          </div>
+          {{/foreach}}
+          {{/if}}
+          <!-- 产品推荐 结束 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{include file="public/footer" /}}
+
+  <script>
+
+    //输入数量
+    function onchangeVal(id) {
+      var goodsClassName = 'count-text' + id;
+      var googsEle = $('.' + goodsClassName)[0];
+      var stock_num = Number($(googsEle).val());
+
+      let max_num = $(googsEle).attr('data-max');
+
+      if (stock_num > max_num) {
+        stock_num = max_num;
+        $(googsEle).val(max_num);
+      }
+
+      if (stock_num < 1) {
+        stock_num = 1;
+        $(googsEle).val(1);
+      }
+
+      var d_id = $(googsEle).parent().parent().data('id');
+      var d_goodsid = $(googsEle).parent().parent().data('goodsid');
+
+      stockAjax(
+        {
+          id: d_id,
+          stock: stock_num,
+          goods_id: d_goodsid
+        },
+        stock_num,
+        $(googsEle)
+      );
+    }
+
+    // 减数量
+    function changeStock(id) {
+      var goodsClassName = 'goodsClassName' + id;
+      var googsEle = $('.' + goodsClassName)[0];
+
+      var stock_num = Number($(googsEle).siblings('.count-text' + id).val()) - 1;
+
+      if (stock_num < 1) {
+        stock_num = 1;
+        $(googsEle).siblings('.count-text' + id).val(1);
+        return
+      }
+
+      var d_id = $(googsEle).parent().parent().data('id');
+      var d_goodsid = $(googsEle).parent().parent().data('goodsid');
+
+      stockAjax({
+        id: d_id,
+        stock: stock_num,
+        goods_id: d_goodsid
+      }, stock_num, $(googsEle).siblings('.count-text' + id));
+    };
+
+    //加数量
+    function changeStockMore(id) {
+      var goodsClassName = 'goodsClassNameMore' + id;
+      var googsEle = $('.' + goodsClassName)[0];
+
+      var stock_num = Number($(googsEle).siblings('.count-text' + id).val()) + 1;
+      let max_num = $(googsEle).siblings('.count-text' + id).attr('data-max');
+
+      if (stock_num > max_num) {
+        stock_num = max_num;
+        $(googsEle).siblings('.count-text' + id).val(max_num);
+        layer.msg('超出购买数');
+        return
+      }
+
+      var d_id = $(googsEle).parent().parent().data('id');
+      var d_goodsid = $(googsEle).parent().parent().data('goodsid');
+
+      stockAjax({
+        id: d_id,
+        stock: stock_num,
+        goods_id: d_goodsid
+      }, stock_num, $(googsEle).siblings('.count-text' + id));
+    };
+
+    function stockAjax(stockData, stock_num, ele) {
+      var options = {
+        url: '/cart/stock',
+        type: 'PUT',
+        data: stockData,
+        dataType: 'JSON',
+        getresult: function (data) {
+          if (data.code == 0) {
+            getCartListMoney(stockData.id, stock_num);
+            ele.val(stock_num);
+            getProductCount();
+          } else {
+            layer.msg(data.msg);
+          }
+        },
+      };
+      sendRequest(options.url, options.type, options.data, options.getresult);
+    };
+
+    //计算总价钱
+    function getCartListMoney() {
+      var totalMoney = 0;
+      var options = {
+        url: '/api/cart',
+        type: 'get',
+        dataType: 'JSON',
+        getresult: function (data) {
+          cartList = data.data.data;
+          if (data.code == 0) {
+            for (var i = 0; i < cartList.length; i++) {
+              totalMoney += Number(cartList[i].price) * Number(cartList[i].stock);
+            };
+
+            if (totalMoney == 0) {
+              $('.gud-page > .full-cart').hide();
+              $('.empty-cart').show();
+            } else {
+              totalMoney = totalMoney.toFixed(2);
+              $('.gud-page .full-cart>.total p span').html(totalMoney);
+              $('.the-sum  .price-sub p span').html(totalMoney);
+            }
+          };
+        }
+      }
+      sendRequest(options.url, options.type, '', options.getresult);
+    };
+    $(document).ready(function () {
+
+      $("#total1>a").click(function () {
+        const _this = $(this);
+        let id = _this.attr('data-id');
+
+        layer.confirm('确认删除商品吗？', { icon: 3, title: '删除商品' }, function (index) {
+          gwdAjax(id, _this);
+          layer.close(index);
+        });
+      });
+      function gwdAjax(id, _this) {
+        var options = {
+          url: '/cart',
+          type: 'DELETE',
+          data: {
+            id: id
+          },
+          dataType: 'JSON',
+          getresult: function (data) {
+            if (data.code == 0) {
+              _this.parents('.prod-price').remove();
+              getCartListMoney();
+              getProductCount();
+            } else {
+              console.log("删除失败" + data.code);
+
+            }
+          }
+        }
+        sendRequest(options.url, options.type, options.data, options.getresult);
+      };
+    });
+  </script>
+</body>
+
+</html>

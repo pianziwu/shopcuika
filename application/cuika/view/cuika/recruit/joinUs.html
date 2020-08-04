@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{include file="public/head"}}
+<script src="__JS__/swiper.min.js"></script>
+<script src="__JS__/wow.min.js"></script>
+
+<body>
+
+    {{include file="public/header"}}
+
+    <div class="container join-us">
+        <div class="heade_img">
+            <img src="__IMAGE__/guanyutoubu.jpg" alt="">
+        </div>
+        <div class="tetle">
+            <p>人才招聘</p>
+            <span>RECRUITMENT</span>
+        </div>
+        <div class="content">
+            <div class="swiper-container" id="ads">
+                <div class="swiper-wrapper">
+                    {{volist name="data_list" id="vo" empty="暂无信息"}}
+                    <div class="swiper-slide nape">
+                        <div class="name">{{$vo.title}}</div>
+                        <p class="data">{{$vo.add_time_date}}</p>
+                        <div class="title"></div>
+                        <div class="responsibility">
+                            {{$vo.content|raw}}
+                        </div>
+                        <div class="site">工作地点：{{$vo.address}}</div>
+                    </div>
+                    {{/volist}}
+                </div>
+
+            </div>
+            <div class="swiper-button-prev swiper-button-black"></div>
+            <div class="swiper-button-next swiper-button-black"></div>
+
+        </div>
+
+        <div class="telephone">联系电话：400-895-1922
+        </div>
+    </div>
+
+    {{include file="public/footer"}}
+
+    <script>
+        if ($(window).width() > 992) {
+            var mySwiper = new Swiper('#ads', {
+                slidesPerView: 3,
+                spaceBetween: 26,
+                normalizeSlideIndex: false,
+                centerInsufficientSlides: true,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            })
+        } else {
+            var mySwiper = new Swiper('#ads', {
+                slidesPerView: 1,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            })
+        }
+
+        $(window).resize(function () {          //当浏览器大小变化时
+            if ($(window).width() > 992) {
+                var mySwiper = new Swiper('#ads', {
+                    slidesPerView: 3,
+                    spaceBetween: 26,
+                    normalizeSlideIndex: false,
+                    centerInsufficientSlides: true,
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                })
+            } else {
+                var mySwiper = new Swiper('#ads', {
+                    slidesPerView: 1,
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                })
+            }
+        });
+    </script>
+
+</body>
+
+</html>

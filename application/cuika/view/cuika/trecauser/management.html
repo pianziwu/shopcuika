@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{include file="public/head"}}
+
+<body>
+
+    {{include file="public/header"}}
+
+    <div class="container zhanghu">
+        <div class="title">账户设置</div>
+        <div class="delivery">
+            <div class="caption">送货地址</div>
+            <div class="site">
+                {{if empty($address)}}
+                <p>您还没有设置收货地址</p>
+                <input type="hidden" id="sf_id">
+                <input type="hidden" id="cx_id" >
+                <input type="hidden" id="xq_id" >
+                <input type="hidden" id="ids" >
+                {{else /}}
+                <!-- <p>送货地址</p> -->
+                <a class="bianji" href="javascript:;">编辑</a>
+                <div class="center xm">{{$address['name']}}</div>
+
+                <!-- <div class="center">中国</div> -->
+                <div class="center dh">{{$address['tel']}}</div>
+                <div class="center">
+                    <span>{{$address['province_name']}}</span>
+                    <span>{{$address['city_name']}}</span>
+                    <span>{{$address['county_name']}}</span>
+                </div>
+                <div class="center xqs">{{$address['address']}}</div>
+                <input type="hidden" id="sf_id" value="{{$address['province']}}">
+                <input type="hidden" id="cx_id" value="{{$address['city']}}">
+                <input type="hidden" id="xq_id" value="{{$address['county']}}">
+                <input type="hidden" id="ids" value="{{$address['id']}}">
+                {{/if}}
+            </div>
+
+        </div>
+        <div class="privacy">
+            <div class="caption">
+                个人信息
+            </div>
+            <div class="center">
+                <!-- <p>个人信息</p> -->
+                <div class="center">
+                    你的个人信息由你自己掌控，你可以随时管理自己的数据或删除账户，致力于保护你的隐私。
+                </div>
+            </div>
+        </div>
+        <div class="zhzhao">
+            {{if empty($address)}}
+            {{else /}}
+            <div class="bianjiyemm">
+                <div class="guanbi"></div>
+                <div class="mingzi">
+                    <input type="text" id="mingzis" placeholder="姓名" value="{{$address['name']}}">
+                </div>
+                <div class="shjhm">
+                    <input type="text" id="lianxidianhua" placeholder="收件人电话" value="{{$address['tel']}}" />
+                </div>
+
+                <div class="shengf">
+                    <select class="province" name="province" id="param_province"
+                        onchange="provincechange(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
+                    </select>
+                </div>
+                <div class="chengshi">
+                    <select class="city" name="city" id="param_city"
+                        onchange="accessToStores(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
+                    </select>
+                </div>
+                <div class="chengshi">
+                    <select class="city" name="city" id="param_counties"
+                        onchange="changCounty(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
+                    </select>
+                </div>
+                <div class="xangxi">
+                    <textarea type="text" id="xangxidz" placeholder="详细地址">{{$address['address']}}</textarea>
+                </div>
+
+                <div class="baocun">
+                    保存
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+
+    {{include file="public/footer"}}
+
+    <script type="text/javascript">
+        var province = ""
+        var city = ""
+        var county = ""
+        var csdataList = {};
+        var xqdataList = {};
+        // 省份初始化
+        $(function () {
+            // 省份
+            sendRequest("/region", 'GET', { 'pid': 0 }, function (data) {
+                let dataList = data.data;
+                let provincesDoms = '';
+                for (var i = 0; i < dataList.length; i++) {
+                    provincesDoms += "<option value="+dataList[i].id+">"+dataList[i].name+"</option>"
+                }
+                $('#param_province').append(provincesDoms);
+            });
+            let sf = document.getElementById('sf_id').value || '';
+
+            let cs = document.getElementById('cx_id').value;
+            // 城市
+            sendRequest("/region", 'GET', { 'pid': sf }, function (data) {
+                csdataList = data.data;
+                let cityDoms = '';
+                for (var i = 0; i < csdataList.length; i++) {
+                    cityDoms += "<option value="+csdataList[i].id+">"+csdataList[i].name+"</option>"
+                }
+                $('#param_city').append(cityDoms);
+            });
+            //县区
+            sendRequest("/region", 'GET', { 'pid': cs }, function (data) {
+                xqdataList = data.data;
+                let countDoms = '';
+                for (var i = 0; i < xqdataList.length; i++) {
+                    countDoms += "<option value="+xqdataList[i].id+">"+xqdataList[i].name+"</option>"
+                }
+                $('#param_counties').append(countDoms);
+            });
+        })
+        $('.bianji').click(function () {
+            removeAll()
+            let sf = document.getElementById('sf_id').value
+            let cs = document.getElementById('cx_id').value
+            let xq = document.getElementById('xq_id').value
+            $('.zhzhao').css("display", "block")
+            $('#mingzis').val($('.xm').text())
+            $('#lianxidianhua').val($('.dh').text())
+            $('#xangxidz').val($('.xqs').text())
+            $('#param_province').val(sf)
+            //城市
+            for (var i = 0; i < csdataList.length; i++) {
+                var newOption = document.createElement("option");
+                newOption.text = csdataList[i].name;
+                newOption.value = csdataList[i].id;
+                document.getElementById("param_city").add(newOption);
+            }
+            $('#param_city').val(cs)
+            // 县区
+            for (var i = 0; i < xqdataList.length; i++) {
+                var newOption = document.createElement("option");
+                newOption.text = xqdataList[i].name;
+                newOption.value = xqdataList[i].id;
+                document.getElementById("param_counties").add(newOption);
+            }
+            $('#param_counties').val(xq)
+        })
+        $('.guanbi').click(function () {
+            $('.zhzhao').css("display", "none")
+        })
+
+        $('.baocun').click(function () {
+            let name = document.getElementById('mingzis').value
+            let tel = document.getElementById('lianxidianhua').value
+            let address = document.getElementById('xangxidz').value
+            province = province == "" ? document.getElementById('sf_id').value : province;
+            city = city == "" ? document.getElementById('cx_id').value : city;
+            county = county == "" ? document.getElementById('xq_id').value : county;
+            let _data = {
+                "name": name,
+                "tel": tel,
+                "province": province,
+                "city": city,
+                "county": county,
+                "address": address,
+                "is_default": 1,
+                "id": document.getElementById('ids').value,
+            };
+            sendRequest("/treca-user", 'POST', _data, function (res) {
+                if (res.code == 0) {
+                    $('.zhzhao').css("display", "none")
+                    location.reload()
+                } else {
+                    layer.msg(res.msg)
+                }
+            });
+        })
+        // 清除城市选项optinos
+        function removeAll() {
+            var obj = document.getElementById('param_city');
+            param_city.options.length = 0;
+            var obj = document.getElementById('param_counties');
+            param_counties.options.length = 0;
+        }
+        //获取城市
+        function provincechange(id, text) {
+            province = id
+            removeAll()
+            sendRequest("/region", 'GET', { 'pid': id }, function (data) {
+                let dataLists = data.data;
+                dataLists.unshift({ name: "请选择城市", id: "" })
+                for (var i = 0; i < dataLists.length; i++) {
+                    var newOption = document.createElement("option");
+                    newOption.text = dataLists[i].name;
+                    newOption.value = dataLists[i].id;
+                    document.getElementById("param_city").add(newOption);
+                }
+            });
+        }
+        //获取城
+        function accessToStores(id, text) {
+            city = id;
+            var obj = document.getElementById('param_counties');
+            param_counties.options.length = 0;
+            sendRequest("/region", 'GET', { 'pid': id }, function (data) {
+                let dataLists = data.data;
+                dataLists.unshift({ name: "请选择县/区", id: "" })
+                for (var i = 0; i < dataLists.length; i++) {
+                    var newOption = document.createElement("option");
+                    newOption.text = dataLists[i].name;
+                    newOption.value = dataLists[i].id;
+                    document.getElementById("param_counties").add(newOption);
+                }
+            });
+        }
+
+        function changCounty(id, text) {
+            county = id;
+        }
+    </script>
+</body>
+
+</html>

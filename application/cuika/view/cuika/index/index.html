@@ -1,0 +1,169 @@
+<!DOCTYPE html >
+<html lang="en">
+{{include file="public/head" /}}
+<script src="__JS__/swiper.min.js"></script>
+<script src="__JS__/wow.min.js"></script>
+<body>
+    <div class="tanchuang">
+        <div class="tan">
+            <div class="tan-box">
+                <div class="tan-close"><img src="__IMAGE__/tanc_close.png" alt=""></div>
+                <p>TRECA品牌官网</p>
+                <p>2020全新升级</p>
+                <div class="tibtn">欢迎体验</div>
+            </div>
+        </div>
+    </div>
+{{include file="public/header" /}}
+
+<div class="main index-page">
+    {{if !empty($top_info)}}
+    <section class="s1 container">
+        <div class="title wow fadeInUp">
+            <h4 class="b-t">{{$top_info.title}}</h4>
+            <p class="s-t"><span>{{$top_info.subtitle}}</span></p>
+        </div>
+        <div class="content wow fadeInUp">
+            <div class="video-box">
+                <video id="index-video" src="{{$top_info.video_url}}"
+                       poster="{{$top_info.images_url}}" webkit-playsinline autoplay loop muted controls preload="auto"></video>
+            </div>
+        </div>
+    </section>
+    {{/if}}
+
+    {{if !empty($goods_list)}}
+    {{foreach $goods_list as $goods_v}}
+    <section class="section s2 container">
+        <div class="mode-title wow fadeInUp">
+            <div class="b-t">{{$goods_v.title}}</div>
+            <div class="s-t">{{$goods_v.subtitle}}</div>
+            <div class="desc">{{$goods_v.describe}}</div>
+            <div class="infos">
+                <span><a href="/product/detail/{{$goods_v.goods_id}}">了解产品详情 ></a></span>
+                <span><a class="buy-btn" href="/product/option/{{$goods_v.goods_id}}" data-goodsId="{{$goods_v.goods_id}}">立即购买 ></a></span>
+            </div>
+        </div>
+        <div class="content wow fadeInUp">
+            <a href="/product/detail/{{$goods_v.goods_id}}"><img src="{{$goods_v.images_url}}" alt=""></a>
+        </div>
+    </section>
+    {{/foreach}}
+    {{/if}}
+    <section class="s5 container">
+        <div class="mode-title wow fadeInUp">
+            <div class="b-t">追求极致生活美学</div>
+            <div class="s-t">来自全世界的知名原创设计师，携手TRECA共同打造卧室里的艺术品</div>
+        </div>
+        <div class="content initSlide wow fadeInUp">
+            <div class="swiper-box">
+                <div class="wrapper">
+                    {{volist name="stylist" id="vo"}}
+                        <div class="slide-item">
+                            <img src="{{$vo.home_head_img}}" alt="">
+                        </div>
+                    {{/volist}}
+                </div>
+                <div class="swiper-btns">
+                    <span class="swiper-btn-prev"><</span>
+                    <span class="swiper-btn-next">></span>
+                </div>
+            </div>
+            <div class="swiper-show-container">
+                {{volist name="stylist" id="vo"}}
+                    <div class="show-box {{if $key == 4}}active{{/if}}">
+                        <img src="{{$vo.home_head_img}}" alt="">
+                        <div class="desc">
+                            <h4 class="name">{{$vo.chinese_name}}</h4>
+                            <p>{{$vo.synopsis}}</p>
+                            <a class="btn" href="/jr-detail"><i></i></a>
+                        </div>
+                    </div>
+                {{/volist}}
+            </div>
+
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {{volist name="stylist" id="vo"}}
+                        <div class="swiper-slide">
+                            <img src="{{$vo.home_head_img}}" alt="">
+                            <div class="infos">
+                                <a href="/jr-detail">
+                                    <h4 class="name">{{$vo.chinese_name}}</h4>
+                                    <p>{{$vo.synopsis}}</p>
+                                </a>
+                            </div>
+                        </div>
+                    {{/volist}}
+                </div>
+                <div class="swiper-button-prev"><</div>
+                <div class="swiper-button-next">></div>
+            </div>
+
+        </div>
+    </section>
+    <a name="dz"></a>
+    {{if !empty($contact)}}
+    <section class="s6 wow fadeInUp">
+        <h4 class="title">{{$contact.title}}</h4>
+        <h6 class="desc">{{$contact.subtitle}}</h6>
+        <a class="tel" href="tel:{{$contact.describe}}">定制：{{$contact.describe}}</a>
+    </section>
+    {{/if}}
+</div>
+
+
+{{include file="public/footer" /}}
+<script>
+    var wow = new WOW().init();
+    var mySwiper = new Swiper('.swiper-container', {
+        // autoplay: {
+        //   disableOnInteraction: false,
+        // },
+        slidesPerView: 2,
+        loop: true,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            320: {  //当屏幕宽度大于等于320
+                slidesPerView: 1,
+                spaceBetween: 10
+            },
+            768: {  //当屏幕宽度大于等于768
+                slidesPerView: 1,
+                spaceBetween: 20
+            },
+            992: {  //当屏幕宽度大于等于1280
+                slidesPerView: 2,
+                spaceBetween: 30
+            }
+        }
+    })
+    $('.tanchuang .tan-close').click(function () {
+        $('.tanchuang').hide()
+    })
+    $('.tibtn').click(function () {
+        $('.tanchuang').hide()
+    })
+
+    setTimeout(function () {
+        $('.tanchuang').hide()
+    }, 5000)
+
+    function setCookie(name, value, days) { //设置cookie
+        var d = new Date();
+        d.setTime(d.getTime() + (days * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = name + "=" + value + "; " + expires;
+    }
+
+    if (document.cookie.indexOf('new_site') == -1) {
+        $('.tanchuang').show().css("height","100%");
+        setCookie('new_site', 'new_site', 5);
+    }
+</script>
+</body>
+</html>

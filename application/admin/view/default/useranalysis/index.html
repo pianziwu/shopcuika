@@ -1,0 +1,209 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+    <div class="content">
+        <div class="warpper">
+            <div class="tabs_info">
+                <ul>
+                    <li class="curr"><a href="admin.php?s=/useranalysis/index">新增会员</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="explanation" id="explanation">
+                    <div class="ex_tit"><i class="sc_icon"></i>
+                        <h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    </div>
+                    <ul>
+                        <li>统计图可根据错选时间段展示新增会员数量走势。</li>
+                    </ul>
+                </div>
+                <div class="stat_order_search stat_order_search2 mt20">
+                    <form class="am-form form-validation form-search" request-type="form">
+                        <table class="so-list more-where">
+                            <tbody>
+                                <tr>
+                                    <td class="time">
+                                        <span>时间：</span>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="start_time" class="am-form-field am-input-sm am-radius Wdate" placeholder="起始时间" value="{{if !empty($search_time.start_time)}}{{$search_time.start_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM-dd 00:00:00'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+                                        <em class="text-grey">~</em>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="end_time" class="am-form-field am-input-sm am-radius Wdate" placeholder="结束时间" value="{{if !empty($search_time.end_time)}}{{$search_time.end_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM-dd 00:00:00'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a class="search-btn am-btn am-btn-primary am-radius am-btn-xs btn-loading-example" data-am-loading="{spinner:'circle-o-notch', loadingText:'搜索中...'}">搜索</a>
+                                        <a href="/admin.php?s=/useranalysis/index" class="am-btn am-btn-warning am-radius am-btn-sm reset-submit">清除条件</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="query_result mt20">
+                    {{if empty($list)}}
+                        <div class="analysis-table-no">
+                            <div class="txt">
+                                <i class="am-icon-warning"></i> 没有相关数据
+                            </div>
+                        </div>
+                        {{else /}}
+                        <div class="section-module">
+                            <div class="title_head">
+                                <h3>新增会员统计</h3>
+                            </div>
+                            <div class="module-content" id="chart_view" style="height:378px;"></div>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- right content end  -->
+        
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+
+<script type="text/javascript">
+    function turnTime(val){
+		var date = new Date(val);
+    	return date.getTime();
+	};
+    $('.search-btn').on('click',function(){
+        var params = $(".form-search").serializeArray();
+        var values = {};
+        var x;
+        for (x in params) {
+          values[params[x].name] = params[x].value;
+        };
+        if(values.start_time || values.end_time){
+			var s_time= values.start_time ? turnTime(values.start_time) : 0;
+			var e_time= values.end_time ? turnTime(values.end_time) : 0;
+			if(e_time< s_time){
+				Prompt('开始时间必须小于结束时间!');
+				return;
+			}
+		};
+        window.location.href= 'admin.php?s=/useranalysis/index&start_time='+values.start_time+'&end_time='+values.end_time;
+    });
+    $('#explanationZoom').on('click',function(){
+        if($(this).hasClass('shopUp')){
+            $(this).removeClass('shopUp');
+            $(this).parents('.ex_tit').css({'margin-bottom':'10px'}).siblings('ul').show();
+            $(this).parents('.explanation').css({'width':'calc(100% - 28px)'});
+        }else{
+            $(this).addClass('shopUp');
+            $(this).parents('.ex_tit').css({'margin-bottom':'0'}).siblings('ul').hide();
+            $(this).parents('.explanation').css({'width':'126px'});
+        };
+    });
+    var timedata= [],memberdata=[];
+    {{if !empty($list)}}
+        {{foreach $list as $k => $v}}
+            timedata.push('{{$k}}');
+            memberdata.push('{{$v}}');
+        {{/foreach}}
+        var datas = {
+            "error": 0,
+            "message": "",
+            "content": {
+                "total_volume": 263,
+                "total_money": 0,
+                "title": {
+                    "text": "",
+                    "subtext": ""
+                },
+                "series": [{
+                    "name": "新增会员",
+                    "type": "line",
+                    "itemStyle": {
+                        "normal": {
+                            "color": "#6cbd40",
+                            "lineStyle": {
+                                "color": "#6cbd40"
+                            }
+                        }
+                    },
+                    "data": memberdata,
+                    "markPoint": {
+                        "itemStyle": {
+                            "normal": {
+                                "color": "#6cbd40"
+                            }
+                        },
+                        "data": [{
+                            "type": "max",
+                        }, {
+                            "type": "min",
+                        }]
+                    }
+                }],
+                "tooltip": {
+                    "trigger": "axis",
+                    "axisPointer": {
+                        "lineStyle": {
+                            "color": "#6cbd40"
+                        }
+                    }
+                },
+                "legend": {
+                    "data": []
+                },
+                "toolbox": {
+                    "show": true,
+                    "orient": "vertical",
+                    "right": "20",
+                    "y": "60",
+                    "feature": {
+                        "magicType": {
+                            "show": true,
+                            "type": ["line", "bar"]
+                        },
+                        "saveAsImage": {
+                            "show": true
+                        }
+                    }
+                },
+                "calculable": true,
+                "xAxis": {
+                    "type": "category",
+                    "boundaryGap": false,
+                    "axisLine": {
+                        "lineStyle": {
+                            "color": "#ccc",
+                            "width": 0
+                        }
+                    },
+                    "data": timedata,
+                },
+                "yAxis": {
+                    "type": "value",
+                    "axisLine": {
+                        "lineStyle": {
+                            "color": "#ccc",
+                            "width": 0
+                        }
+                    },
+                    "axisLabel": {
+                        "formatter": ""
+                    },
+                    "formatter": "{value}\u4e2a"
+                },
+                "xy_file": []
+            }
+        };
+        set_chart_view(datas.content, 'chart_view');
+        function set_chart_view(chart_date, chart_id){
+            var mebAdd_chart = echarts.init(document.getElementById(chart_id));
+            mebAdd_chart.setOption(chart_date);
+            window.onresize = function (){
+                mebAdd_chart.resize();
+            };
+        }
+    {{/if}}
+</script>

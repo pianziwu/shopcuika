@@ -1,0 +1,43 @@
+<footer>
+    <div class="footer-nav">
+        <div class="nav-list">
+            <!-- 底部导航 -->
+            {{if !empty($nav_footer)}}
+            {{foreach $nav_footer as $k=>$v}}
+            <div class="list-item">
+                <div class="title">{{$v.name}}</div>
+                {{if !empty($v['items'])}}
+                {{foreach $v.items as $vs}}
+                <div class="item-link"><a href="{{$vs.url}}">{{$vs.name}}</a></div>
+                {{/foreach}}
+                {{/if}}
+            </div>
+            {{/foreach}}
+            {{/if}}
+        </div>
+        <div class="qr-list">
+            {{if !empty($home_site_weixin_qrcode_images)}}
+            <div class="list-item">
+                <div class="title">官方微信</div>
+                <div class="item-link"><img src="{{$home_site_weixin_qrcode_images}}" alt=""></div>
+            </div>
+            {{/if}}
+            {{if !empty($home_site_weibo_qrcode_images)}}
+            <div class="list-item">
+                <div class="title">官方微博</div>
+                <div class="item-link"><img src="{{$home_site_weibo_qrcode_images}}" alt=""></div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="footer-copy">
+        <p>
+            COPYRIGHT ©2019 TRECA ALL RIGHTSRESERVED
+            <a href="{{if isset($home_site_security_record_url)}}{{$home_site_security_record_url}}{{/if}}" target="_blank">
+                {{if isset($home_site_security_record_name)}}{{$home_site_security_record_name}}{{/if}}
+            </a>
+        </p>
+    </div>
+</footer>
+
+{{include file="public/loginAlert" /}}

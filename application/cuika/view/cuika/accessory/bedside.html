@@ -1,0 +1,92 @@
+<!DOCTYPE html >
+<html lang="en">
+
+<!-- head -->
+{{include file="/public/head"}}
+<link rel="stylesheet" href="__CSS__/product-style.min.css">
+<!-- head -->
+
+<body>
+<!-- 头部 -->
+{{include file="/public/header"}}
+<!-- 头部 -->
+
+  <!-- 床头柜系列 -->
+  <main>
+    <div class="z-product-main z-product">
+      <section class="s1 container">
+        <div class="title">
+          <h4 class="b-t">一室之内，整整齐齐</h4>
+          <p><span class="text-uppercase">时光在此间流离，静静沉淀</span></p>
+        </div>
+      </section>
+      <section class="container">
+        <div class="banner banner-pj">
+            <img src="__IMAGE__/pj_wuxian_banner.jpg" alt="banner图">
+        </div>
+
+        <div class="content">
+          <div class="content-left">
+            <!-- 左侧边栏 -->
+            {{include file="/public/aside"}}
+            <!-- 左侧边栏 -->
+          </div>
+          <div class="content-right">
+            {{if !empty($data_list)}}
+            {{foreach $data_list.data as $goods}}
+              <div class="item">
+                  <div class="item-top">
+                    <div class="img">
+                      <a href="/product/detail/{{$goods.id}}">
+                          <img src="{{$goods.images}}" alt="产品图片">
+                      </a>
+                    </div>
+                    <div class="word">
+                        <p>{{$goods.title}}</p>
+                        <p>¥{{$goods.price}}</p>
+                    </div>
+                  </div>
+                  <div class="item-bottom">
+                    <div class="shop"><p class="btn" data-goodsid={{$goods.id}}>加入购物袋</p></div>
+                    <a href="/product/detail/{{$goods.id}}" class="more">进一步了解></a>
+    
+                    <div class="success-msg">
+                      <h3 class="title">成功加入购物车</h3>
+                      <p>您可以<a href="/cart" target="_blank">去购物车结算</a></p>
+                    </div>
+                  </div>
+              </div>
+            {{/foreach}}
+            {{/if}}
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+<!-- 床头柜系列 -->
+
+
+<!-- 底部 -->
+{{include file="/public/footer"}}
+<!-- 底部 -->
+
+<script>
+
+
+    $('.nav-list .nav-menu .nav-menu-btn').on("click", function () {
+        let idx = $(this).index();
+        $(this).find('.icon-height').toggleClass('down');
+        $(this).find('.icon-width').toggleClass('down');
+
+        const navSon = $(this).parent().find('.nav-son-list');
+        if (navSon.is(":hidden")) {
+            navSon.slideDown();
+        } else {
+            navSon.slideUp();
+        }
+
+    });
+
+</script>
+</body>
+</html>

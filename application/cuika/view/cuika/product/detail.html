@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- head -->
+{{include file="/public/head"}}
+<link rel="stylesheet" href="__CSS__/product-style.min.css">
+<!-- head -->
+
+<body>
+  <!-- 头部 -->
+  {{include file="/public/header"}}
+  <!-- 头部 -->
+
+  <!-- 床垫详情页 -->
+  <main>
+    <div class="z-product-main z-product z-product-detail">
+
+      <section class="s1 container">
+        <!-- 第一张图片 开始 -->
+        {{if !empty($data_list.goods_detail[0]['title'])}}
+        <div class="title">
+          <h4 class="b-t"> {{$data_list.goods_detail[0]['title']}}</h4>
+          <p><span class="text-uppercase">{{$data_list.goods_detail[0]['endescribe']}}</span>
+          </p>
+          <p class="word"> {{$data_list.goods_detail[0]['describe']}}</p>
+        </div>
+        {{/if}}
+      </section>
+
+      <section class="container">
+        {{if !empty($data_list.goods_detail[0]['images'])}}
+        <div class="banner">
+          <img src="{{$data_list.goods_detail[0]['images']}}" alt="banner图">
+        </div>
+        {{/if}}
+        <!-- 第一张图片 结束 -->
+
+        <div class="content">
+
+          <!-- 第234张图片 开始 -->
+          {{if !empty($data_list.goods_detail)}}
+          <div class="content-top">
+            {{foreach $data_list.goods_detail as $key => $value}}
+            {{if in_array($key, [1,2,3])}}
+            <div class="item">
+              <div class="img">
+                <img src="{{$value.images}}" alt="详情图片">
+              </div>
+              <div class="test">
+                <h3 class="title">{{$value.title}}</h3>
+                <p>{{$value.describe}}</p>
+              </div>
+            </div>
+            {{/if}}
+            {{/foreach}}
+          </div>
+          {{/if}}
+          <!-- 第234张图片 结束 -->
+
+          <!-- 第 5 张图片 开始 -->
+          {{if !empty($data_list.goods_detail[4])}}
+          <div class="content-center">
+            <div class="title common-title">
+              <h3>{{$data_list.goods_detail[4]['title']}}</h3>
+              <p>{{$data_list.goods_detail[4]['describe']}}
+              </p>
+            </div>
+            <div class="layout-content">
+              <div class="layout">
+                <div class="img">
+                  <img src="{{$data_list.goods_detail[4]['images']}}" alt="产品详情图">
+                </div>
+                <div class="test">
+                  {{if !empty($data_list.goods_attribute_join['summer_fabrics'])}}
+                  <div class="word">
+                    <h4>夏季面</h4>
+                    <p>{{$data_list.goods_attribute_join['summer_fabrics']}}</p>
+                  </div>
+                  {{/if}}
+                  {{if !empty($data_list.goods_attribute_join['winter_fabrics'])}}
+                  <div class="word word-2">
+                    <h4>冬季面</h4>
+                    <p>{{$data_list.goods_attribute_join['winter_fabrics']}}</p>
+                  </div>
+                  {{/if}}
+                </div>
+              </div>
+            </div>
+          </div>
+          {{/if}}
+          <!-- 第 5 张图片 结束 -->
+
+          <div class="content-bottom">
+            <div class="title common-title">
+              <h3>优选推荐</h3>
+              <p>搭配周边各种床架、床头柜、床尾凳、功能椅等配件产品</p>
+              <div class="btn-shop">
+                <a href="/accessory">选购床垫配件 ></a>
+              </div>
+            </div>
+            <div class="layout-content">
+              <div class="layout">
+                <!-- 产品推荐 开始 -->
+                {{if !empty($recommend_list)}}
+                {{foreach $recommend_list as $re_value}}
+                <div class="item">
+                  <div class="img">
+                    {{if !empty($re_value)}}
+                    <a href="/product/detail/{{$re_value.id}}">
+                      <img src="{{$re_value.home_recommended_images}}" alt="推荐图片">
+                     </a>
+                    {{/if}}
+                  </div>
+                  <div class="btn-shop btn-shop-item">
+                    <a href="/product/detail/{{$re_value.id}}">{{$re_value.title}} ></a>
+                  </div>
+                 </div>
+                {{/foreach}}
+                {{/if}}
+                <!-- 产品推荐 结束 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 购买帮助 -->
+          <div class="shop-flow">
+            <dl class="list">
+              <dt>送货入户及安装</dt>
+              <dd>专业服务人员送货入户<br />并提供免费安装服务</dd>
+              <!-- <dd><a href="#">了解详情 ></a></dd> -->
+            </dl>
+            <dl class="list">
+              <dt>获得选购帮助</dt>
+              <dd>结合自身睡眠习惯<br />挑选最适合的舒适床垫</dd>
+              <dd><a href="/choose">了解详情 ></a></dd>
+            </dl>
+            <dl class="list">
+              <dt>售后质保服务</dt>
+              <dd>十年超长质保服务<br />尊享以旧换新服务</dd>
+              <dd><a href="/after-sale">了解详情 ></a></dd>
+            </dl>
+            <dl class="list">
+              <dt>产品个性定制</dt>
+              <dd>根据不同需求,定制专属产品<br />
+                请致电400 895 1922</dd>
+              <!-- <dd><a href="#">了解详情 ></a></dd> -->
+            </dl>
+          </div>
+          <!-- 购买帮助 -->
+
+          <!-- 底部购买 -->
+          <div class="shop-foot">
+            <div class="layout-content">
+              <div class="item item-1">
+                {{if !empty($data_list.home_recommended_images)}}
+                <div class="img">
+                  <img src="{{$data_list.home_recommended_images}}" alt="详情产品图">                 
+                </div>
+                {{/if}}
+              </div>
+              <div class="item item-2">
+
+                {{if !empty($data_list)}}
+                {{if !empty($data_list.goods_detail[0]['title'])}}
+                <h3 class="title">{{$data_list.goods_detail[0]['title']}}</h3>
+                {{/if}}
+                <div class="test-box">
+                  <div class="test">
+                    {{if !empty($data_list.web_bottom_params.left)}}
+                    {{foreach $data_list.web_bottom_params.left as $attr}}
+                    <p>{{$attr}}</p>
+                    {{/foreach}}
+                    {{/if}}
+                  </div>
+                  <div class="test test-2">
+                    {{if !empty($data_list.web_bottom_params.right)}}
+                    {{foreach $data_list.web_bottom_params.right as $attr}}
+                    <p>{{$attr}}</p>
+                    {{/foreach}}
+                    {{/if}}
+                  </div>
+                </div>
+                {{/if}}
+
+              </div>
+              <div class="item item-3">
+                {{if !empty($data_list)}}
+                <div class="shop-box">
+                  <!-- <div class="shop shop-cart"><a class="cart-btn addFixedBtn" data-goodsid="{{$data_list.id}}">加入购物袋</a></div> -->
+                  <div class="shop shopping"><a class="buy-btn" data-goodsid="{{$data_list.id}}" href="/product/option/{{$data_list.id}}">立即购买</a></div>
+
+                  <!-- <div class="success-msg">
+                    <h3 class="title">成功加入购物车</h3>
+                    <p>您可以<a href="/cart" target="_blank">去购物车结算</a></p>
+                  </div> -->
+                </div>
+                <div class="collect-box">
+                  <div class="collect" data-goodsid="{{$data_list.id}}"><span {{if $data_list.is_favor == 1 }} class="star star-on" {{else /}} class="star" {{/if}}></span><span>收藏 ></span>
+                  </div>
+                  <a href="/address">线下体验 ></a>
+                </div>
+                {{/if}}
+              </div>
+              <div class="btn-close"></div>
+            </div>
+          </div>
+
+          <div class="shopping-btn">
+            <p>立<br />即<br />购<br />买</p>
+          </div>
+          <!-- 底部购买 -->
+
+        </div>
+      </section>
+    </div>
+  </main>
+  <!-- 床垫详情页 -->
+
+
+  <!-- 底部 -->
+  {{include file="/public/footer"}}
+  <!-- 底部 -->
+
+  <script>
+    //加入购物袋
+    // $('.shop>.cart-btn').click(function () {
+    //   const _this = $(this);
+    //   let goodsId = _this.attr('data-goodsid');
+    //   productAjax(goodsId, _this);
+
+    // });
+    // $('.shop>.buy-btn').click(function () {
+    //   const _this = $(this);
+    //   let goodsId = _this.attr('data-goodsid');
+
+    //   productAjax(goodsId, _this);
+
+    //   setTimeout(function () {
+    //     window.location.href = "/cart";
+    //   }, 2000);
+    // });
+
+    // function productAjax(goodsId, _this) {  
+    //   const options = {
+    //     url: '/cart',
+    //     type: 'POST',
+    //     data: {
+    //       goods_id: goodsId, 
+    //       stock: 1
+    //     },
+    //     dataType: 'JSON',
+    //     getresult: function(data) {
+    //       if (data.code == 0) {
+    //         _this.parent().parent().find('.success-msg').fadeIn();
+
+    //         setTimeout(function () {
+    //           _this.parent().parent().find('.success-msg').fadeOut(800);
+    //         }, 1000);
+
+    //       } else if (data.code == -400) {
+    //         layer.msg(data.msg, { time: 1000, }, function () {
+    //           window.location.href = "/loginInfo";
+    //         });
+
+    //       } else {
+    //         console.log("加入购物车失败" + data.code);
+
+    //       }
+    //     }
+    //   }
+    //   sendRequest(options.url, options.type, options.data, options.getresult);
+    // }
+    //加入购物袋
+
+
+    //添加收藏
+    $('.collect-box>.collect').click(function () {
+      const _this = $(this);
+      let goodsId = _this.attr('data-goodsid');
+      let shoucangId = _this.attr('data-shoucang');
+      console.log(shoucangId);
+      detailAjax(goodsId, _this, shoucangId);
+    });
+
+    function detailAjax(goodsId, _this) {
+
+      sendRequest('/good/favor', 'POST', { goods_id: goodsId, stock: 1 }, function (data) {
+
+        if (data.code == 0) {
+          if(data.data.status==1){
+            _this.find('.star').addClass('star-on');
+          }else{
+            _this.find('.star').removeClass('star-on');
+          };
+        } else if (data.code == -400) {
+
+          layer.msg(data.msg, { time: 1000, }, function () {
+            window.location.href = "/loginInfo";
+          });
+
+        } else {
+          console.log("收藏失败" + data.code);
+
+        }
+        }
+      );
+    }
+
+    //添加收藏
+
+
+
+    // 底部购物栏动画
+    $('.btn-close').click(function () {
+      let shopHeight = $('.shop-foot').height();
+      $('.shop-foot').animate({
+        'bottom': -shopHeight
+      }, 1000);
+      $('.shopping-btn').animate({
+        'left': 0
+      }, 1000);
+    });
+
+    $('.shopping-btn').click(function () {
+      $('.shop-foot').animate({
+        'bottom': 0
+      }, 800);
+      $(this).animate({
+        'left': -44
+      }, 1000);
+    });
+    // 底部购物栏动画
+
+  </script>
+</body>
+
+</html>

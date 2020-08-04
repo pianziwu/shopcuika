@@ -1,0 +1,121 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+	<div class="content">
+		<!-- form start -->
+		<form class="am-form form-validation view-save" action="{{:MyUrl('admin/stylist/save')}}" method="POST" request-type="ajax-url" request-value="{{:MyUrl('admin/stylist/index', $params)}}">
+			<legend>
+				<span class="am-text-default">
+					{{if empty($data['id'])}}
+						大师添加
+					{{else /}}
+						大师编辑
+					{{/if}}
+				</span>
+				<a href="{{:MyUrl('admin/stylist/index', $params)}}" class="am-fr am-text-sm am-margin-top-xs am-icon-mail-reply"> 返回</a>
+			</legend>
+
+			<div class="am-form-group">
+				<label>中文名</label>
+				<div class="am-input-group am-input-group-sm">
+					<input type="hidden" name="chinese_name_color" value="{{if !empty($data['chinese_name_color'])}}{{$data.chinese_name_color}}{{/if}}" />
+					<input type="text" name="chinese_name" placeholder="中文名" minlength="2" maxlength="60" data-validation-message="中文名长度 2~60 个字符" class="am-form-field am-radius" {{if !empty($data)}} value="{{$data.chinese_name}}" {{/if}} {{if !empty($data['chinese_name_color'])}} style="color:{{$data.chinese_name_color}};" {{/if}} required />
+					<span class="am-input-group-btn">
+						<button class="am-btn am-btn-default am-btn-xs colorpicker-submit" type="button" data-input-tag="input[name='chinese_name']" data-color-tag="input[name='chinese_name_color']">
+							<img src="{{$attachment_host}}/static/common/images/colorpicker.png" />
+						</button>
+					</span>
+				</div>
+			</div>
+
+			<div class="am-form-group">
+				<label>英文名</label>
+				<div class="am-input-group am-input-group-sm">
+					<input type="hidden" name="english_name_color" value="{{if !empty($data['english_name_color'])}}{{$data.english_name_color}}{{/if}}" />
+					<input type="text" name="english_name" placeholder="英文名" class="am-form-field am-radius" {{if !empty($data)}} value="{{$data.english_name}}" {{/if}} {{if !empty($data['english_name_color'])}} style="color:{{$data.english_name_color}};" {{/if}} />
+					<span class="am-input-group-btn">
+						<button class="am-btn am-btn-default am-btn-xs colorpicker-submit" type="button" data-input-tag="input[name='english_name']" data-color-tag="input[name='english_name_color']">
+							<img src="{{$attachment_host}}/static/common/images/colorpicker.png" />
+						</button>
+					</span>
+				</div>
+			</div>
+
+			<div class="am-form-group">
+				<label>简介</label>
+				<div class="am-input-group" style="width: 100%">
+					<input type="text" name="synopsis" placeholder="简介" minlength="2" maxlength="500" data-validation-message="简介长度 2~500 个字符" class="am-radius" {{if !empty($data)}} value="{{$data.synopsis}}" {{/if}} required />
+				</div>
+			</div>
+
+			<div class="am-form-group am-form-file">
+				<label class="block">头像<span class="am-form-group-label-tips">建议尺寸：352*534（像素）</span></label>
+				<ul class="plug-file-upload-view goods-recommended-images-view person-head-img" data-form-name="head_img" data-max-number="1" data-dialog-type="images">
+					{{if !empty($data['head_img'])}}
+					<li>
+						<input type="text" name="head_img" value="{{$data.head_img}}" />
+						<img src="{{$data.head_img}}" />
+						<i>×</i>
+					</li>
+					{{/if}}
+				</ul>
+				<div class="plug-file-upload-submit" data-view-tag="ul.person-head-img">+上传图片</div>
+			</div>
+
+			<div class="am-form-group am-form-file">
+				<label class="block">首页头像<span class="am-form-group-label-tips">建议尺寸：380*380（像素）</span></label>
+				<ul class="plug-file-upload-view goods-recommended-images-view home-head-img" data-form-name="home_head_img" data-max-number="1" data-dialog-type="images">
+					{{if !empty($data['home_head_img'])}}
+					<li>
+						<input type="text" name="home_head_img" value="{{$data.home_head_img}}" />
+						<img src="{{$data.home_head_img}}" />
+						<i>×</i>
+					</li>
+					{{/if}}
+				</ul>
+				<div class="plug-file-upload-submit" data-view-tag="ul.home-head-img">+上传图片</div>
+			</div>
+
+			<!-- 相册 -->
+			<div id="goods-nav-photo" class="division-block am-form-group am-form-file">
+				<label class="block nav-detail-title">作品相册<span
+						class="am-form-group-label-tips">建议尺寸一致：277*192（像素）</span></label>
+				<ul class="plug-file-upload-view goods-photo-view" data-form-name="photo[]" data-max-number="30"
+					data-dialog-type="images">
+					{{if !empty($data['photo'])}}
+					{{foreach $data.photo as $v}}
+					<li>
+						<input type="text" name="photo[]" value="{{$v}}" />
+						<img src="{{$v}}" />
+						<i>×</i>
+					</li>
+					{{/foreach}}
+					{{/if}}
+				</ul>
+				<div class="plug-file-upload-submit" data-view-tag="ul.goods-photo-view">+上传相册</div>
+			</div>
+
+			<div class="am-form-group">
+				<label>跳转url地址<span class="am-form-group-label-tips">带http://或https://</span></label>
+				<input type="url" name="jump_url" placeholder="跳转url地址" data-validation-message="跳转url地址格式有误" class="am-radius" {{if !empty($data)}} value="{{$data.jump_url}}"{{/if}} />
+			</div>
+
+			<div class="am-form-group">
+			    <label class="block">是否启用</label>
+			    <input name="is_enable" value="1" type="checkbox" data-off-text="否" data-on-text="是" data-size="xs" data-on-color="success" data-off-color="default" data-handle-width="50" data-am-switch {{if !empty($data) and $data['is_enable'] eq 1}}checked="true"{{/if}} />
+			</div>
+
+			<div class="am-form-group am-form-group-refreshing">
+				<input type="hidden" name="id" {{if !empty($data)}} value="{{$data.id}}"{{/if}} />
+				<button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block" data-am-loading="{loadingText:'处理中...'}">保存</button>
+			</div>
+		</form>
+        <!-- form end -->
+	</div>
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->

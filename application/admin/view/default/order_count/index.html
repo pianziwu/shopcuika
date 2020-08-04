@@ -1,0 +1,922 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+    <div class="content">
+        <div class="warpper">
+            <div class="tabs_info">
+                <ul>
+                    <li class="curr"><a href="admin.php?s=/ordercount/index">订单统计</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="explanation" id="explanation">
+                    <div class="ex_tit"><i class="sc_icon"></i>
+                        <h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    </div>
+                    <ul>
+                        <li>统计商城所有的订单，销售总额、有效金额、总点击数、每日点击数、每日点击购买额。</li>
+                        <li>选择不同月份统计出现几个月的订单概括、配送方式、支付方式统计图</li>
+                    </ul>
+                </div>
+                <div class="total_items">
+                    <ul>
+                        <li>销售总额：<b>{{$sale_count}}</b></li>
+                        <li>有效订单总额：<b><em>¥</em>{{$valid_order_count}}</b></li>
+                        <li>总点击数：<b>{{$access_count}}</b></li>
+                        <li>每千点击订单数：<b>{{$order_per_thousand}}</b></li>
+                        <li>每千点击购物额：<b><em>¥</em>{{$order_per_thousand_price_count}}</b></li>
+                    </ul>
+                </div>
+                <div class="stat_order_search stat_order_search2 mt20">
+                    <form class="am-form form-validation form-search" request-type="form">
+                        <table class="so-list more-where">
+                            <tbody>
+                                <tr>
+                                    <td class="time d-time">
+                                        <span>起止时间：</span>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="start_time" class="am-form-field am-input-sm am-radius Wdate" placeholder="起始时间" value="{{if !empty($order_info)}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM-dd 00:00:00'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+                                        <em class="text-grey">~</em>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="end_time" class="am-form-field am-input-sm am-radius Wdate" placeholder="结束时间" value="{{if !empty($order_info)}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM-dd 00:00:00'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+										<a class="search-btn am-btn am-btn-primary am-radius am-btn-xs btn-loading-example" data-am-loading="{spinner:'circle-o-notch', loadingText:'搜索中...'}" style="margin-left: 40px;">搜索</a>
+										<a href="/admin.php?s=/ordercount/index" class="am-btn am-btn-warning am-radius am-btn-sm reset-submit">清除条件</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+					</form>
+					<form class="am-form form-validation form-search" request-type="form">
+                        <table class="so-list more-where">
+                            <tbody>
+                                <tr>
+                                    <td class="time d-month">
+                                        <span>查询年月：</span>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="first_month" class="am-form-field am-input-sm am-radius Wdate" placeholder="" value="{{if !empty($search_time.start_time)}}{{$search_time.start_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+                                        <em class="text-grey">+</em>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="second_month" class="am-form-field am-input-sm am-radius Wdate" placeholder="" value="{{if !empty($search_time.end_time)}}{{$search_time.end_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+                                        <em class="text-grey">+</em>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="third_month" class="am-form-field am-input-sm am-radius Wdate" placeholder="" value="{{if !empty($search_time.end_time)}}{{$search_time.end_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+                                        <em class="text-grey">+</em>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="forth_month" class="am-form-field am-input-sm am-radius Wdate" placeholder="" value="{{if !empty($search_time.end_time)}}{{$search_time.end_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+                                        <em class="text-grey">+</em>
+                                        <span>
+                                            <input type="text" autocomplete="off" name="five_month" class="am-form-field am-input-sm am-radius Wdate" placeholder="" value="{{if !empty($search_time.end_time)}}{{$search_time.end_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                        </span>
+										<a class="search-btn-month am-btn am-btn-primary am-radius am-btn-xs btn-loading-example" data-am-loading="{spinner:'circle-o-notch', loadingText:'搜索中...'}" style="margin-left: 40px;">搜索</a>
+										<a href="/admin.php?s=/ordercount/index" class="am-btn am-btn-warning am-radius am-btn-sm reset-submit">清除条件</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="query_result mt20">
+                    {{if !empty($list)}}
+                        <div class="table-no"><i class="am-icon-warning"></i> 没有相关数据</div>
+                        {{else /}}
+                        <div class="stat_order_warp">
+                            <div class="stat_order_tabs">
+                                <ul>
+                                    <li class="current">订单概况</li>
+                                    <li>配送方式</li>
+                                    <li>支付方式</li>
+                                    <li>配送地区</li>
+                                </ul>
+                            </div>
+                            <div class="stat_order_content">
+                            	<div class="stat_order_item">
+									{{if !empty($month_data)}}
+										<div id="order_main" style="height:378px;"></div>
+										<div id="order_main_price" style="height:378px;"></div>
+										{{else/}}
+										{{if empty($order_info[0])}}
+										<div class="analysis-table-no">
+											<div class="txt">
+												<i class="am-icon-warning"></i> 没有相关数据
+											</div>
+										</div>
+										{{/if}}	
+										<div id="order_main" style="height:378px;"></div>
+										<div id="order_main_price" style="height:378px;"></div>
+									{{/if}}	
+                                </div>
+								<div class="stat_order_item" style="display: none;">
+								{{if empty($shipping)}}
+									<div class="analysis-table-no">
+										<div class="txt">
+											<i class="am-icon-warning"></i> 没有相关数据
+										</div>
+									</div>
+									{{else /}}
+									<div id="ship_main" style="width:970px; height:500px; margin:0 auto;"></div>
+								{{/if}}	
+                                </div>
+								<div class="stat_order_item" style="display: none;">
+								{{if empty($pay_count)}}
+									<div class="analysis-table-no">
+										<div class="txt">
+											<i class="am-icon-warning"></i> 没有相关数据
+										</div>
+									</div>
+									{{else /}}
+                                	<div id="pay_main" style="width:970px; height:500px; margin:0 auto;"></div>
+								{{/if}}	
+                                </div>
+                                <div class="stat_order_item" style="display: none;">
+								{{if empty($order_address)}}
+									<div class="analysis-table-no">
+										<div class="txt">
+											<i class="am-icon-warning"></i> 没有相关数据
+										</div>
+									</div>
+									{{else /}}
+                                	<div id="area_main" style="width:970px; height:500px; margin:0 auto;"></div>
+								{{/if}}
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- right content end  -->
+        
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+
+<script type="text/javascript">
+	function turnTime(val){
+		var date = new Date(val);
+    	return date.getTime();
+	};
+    $('.search-btn').on('click',function(){
+        var params = $(".form-search").eq(0).serializeArray();
+        var values = {};
+        var x;
+        for (x in params) {
+          values[params[x].name] = params[x].value;
+		};
+		if(values.start_time || values.end_time){
+			var s_time= values.start_time ? turnTime(values.start_time) : 0;
+			var e_time= values.end_time ? turnTime(values.end_time) : 0;
+			if(e_time< s_time){
+				Prompt('开始时间必须小于结束时间!');
+				return;
+			}
+		};
+		var searchUrl="";
+        for(var key in values){
+            if(values[key]){
+                searchUrl+='&'+key+'='+values[key]; 
+            };
+        };
+        window.location.href= 'admin.php?s=/ordercount/index'+searchUrl;
+    });
+	$('.search-btn-month').on('click',function(){
+        var params = $(".form-search").eq(1).serializeArray();
+        var values = {};
+        var x;
+        for (x in params) {
+          values[params[x].name] = params[x].value;
+        };
+		var searchUrl="";
+        for(var key in values){
+            if(values[key]){
+                searchUrl+='&'+key+'='+values[key]; 
+            };
+        };
+        window.location.href= 'admin.php?s=/ordercount/index'+searchUrl;
+    });
+    $('.stat_order_tabs li').on('click',function(){
+        var aIndex= $(this).index();
+        $(this).addClass('current').siblings().removeClass('current');
+        $('.stat_order_content .stat_order_item').eq(aIndex).show().siblings().hide();
+    });
+    $('#explanationZoom').on('click',function(){
+        if($(this).hasClass('shopUp')){
+            $(this).removeClass('shopUp');
+            $(this).parents('.ex_tit').css({'margin-bottom':'10px'}).siblings('ul').show();
+            $(this).parents('.explanation').css({'width':'calc(100% - 28px)'});
+        }else{
+            $(this).addClass('shopUp');
+            $(this).parents('.ex_tit').css({'margin-bottom':'0'}).siblings('ul').hide();
+            $(this).parents('.explanation').css({'width':'126px'});
+        };
+    });
+</script>
+<script type="text/javascript">
+
+	//统计数据 start
+	var colorBox = ['#ff7f50','#87cefa','#e18cde','#32cd32','#83aaf0','#ff87c3','#c777db','#cd5c5c','#ffb733','#66e6d9','#1e90ff','#ff6347','#9586f1','#33fbae','#84adff','#6699ff','#ff6666','#3cb371','#b8860b','#30e0e0'];
+	var is_multi = false;
+	var area_data_show= false,sale_data_show= false,ship_data_show= false,order_info_show= false,pay_count_show= false;
+	var order_data =[[],[],[],[],[],[],[],[]];
+	var sale_data =[[],[],[],[],[],[],[],[]];
+	var ship_data = [[],[]];
+	{{if !empty($month_data)}}
+		is_multi = true;
+		{{foreach $month_data as $k => $v}}
+		order_data[0].push('{{$k}}');
+		sale_data[0].push('{{$k}}');
+			{{if !empty($v)}}
+				{{foreach $v as $s}}
+					{{if $s["status"] == 0}}
+						order_data[1].push('{{$s["order_count"]}}');
+						sale_data[1].push('{{$s["price_count"]}}');
+					{{/if}}
+					{{if $s["status"] == 1}}
+						order_data[2].push('{{$s["order_count"]}}');
+						sale_data[2].push('{{$s["price_count"]}}');
+					{{/if}}
+					{{if $s["status"] == 2}}
+						order_data[3].push('{{$s["order_count"]}}');
+						sale_data[3].push('{{$s["price_count"]}}');
+					{{/if}}
+					{{if $s["status"] == 3}}
+						order_data[4].push('{{$s["order_count"]}}');
+						sale_data[4].push('{{$s["price_count"]}}');
+					{{/if}}
+					{{if $s["status"] == 4}}
+						order_data[5].push('{{$s["order_count"]}}');
+						sale_data[5].push('{{$s["price_count"]}}');
+					{{/if}}
+					{{if $s["status"] == 5}}
+						order_data[6].push('{{$s["order_count"]}}');
+						sale_data[6].push('{{$s["price_count"]}}');
+					{{/if}}
+					{{if $s["status"] == 6}}
+						order_data[7].push('{{$s["order_count"]}}');
+						sale_data[7].push('{{$s["price_count"]}}');
+					{{/if}}
+				{{/foreach}}
+			{{/if}}
+		{{/foreach}}
+		order_data[0].forEach(function(item,index){
+			$('.d-month input').eq(index).val(item);
+		});
+	{{/if}}
+	{{if !empty($shipping)}}
+		ship_data_show= true;
+        {{foreach $shipping as $v}}
+			ship_data[0].push('{{$v.name}}');
+			ship_data[1].push({name:'{{$v["name"]}}',value:'{{$v["shipping_count"]}}'});
+        {{/foreach}}
+	{{/if}}
+	var pay_data = [[],[]];
+	{{if !empty($pay_count)}}
+		pay_count_show= true;
+        {{foreach $pay_count as $v}}
+			pay_data[0].push('{{$v.name}}');
+			pay_data[1].push({name:'{{$v["name"]}}',value:'{{$v["count(qo.id)"]}}'});
+        {{/foreach}}
+	{{/if}}
+	var area_data = [[],[]];
+	{{if !empty($order_address)}}
+		area_data_show= true;
+        {{foreach $order_address as $v}}
+			area_data[0].push('{{$v.name}}');
+			area_data[1].push({name:'{{$v["name"]}}',value:'{{$v["province_count"]}}'});
+        {{/foreach}}
+	{{/if}}	
+	var order_info_count = [[],[]];
+	var order_info_amount = [[],[]];
+	{{if !empty($order_info)}}
+	{{if !empty($order_info[0])}}
+		order_info_show= true;
+			{{foreach $order_info[0] as $v}}
+				order_info_count[0].push('{{$v["order_count"]}}');
+				order_info_count[1].push('{{$v["day"]}}');
+			{{/foreach}}
+		{{/if}}
+		{{if !empty($order_info[1])}}
+		order_info_show= true;
+			{{foreach $order_info[1] as $v}}
+				order_info_amount[0].push('{{$v["price_count"]}}');
+				order_info_amount[1].push('{{$v["day"]}}');
+			{{/foreach}}
+		{{/if}}
+		if(order_info_count[1][0]){
+			$("input[name='start_time']").val(order_info_count[1][0]+' 00:00:00');
+			$("input[name='end_time']").val(order_info_count[1][order_info_count[1].length-1]+' 00:00:00');
+		};
+	{{/if}}
+
+	var myChart_order = echarts.init(document.getElementById("order_main"));
+	var myChart_price = echarts.init(document.getElementById("order_main_price"));
+	
+	if(is_multi){
+		//订单概况
+		var option_order = {
+			title : {
+				text: '订单概况',
+				subtext: ''
+			},
+			tooltip : {
+				trigger: 'axis'
+			},
+			legend: {
+				data:['待确认','已确认/待支付',"已支付/待发货","已发货/待收货","已完成","已取消","已关闭"]
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					magicType : {show: true, type: ['line', 'bar']},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+			xAxis : [
+				{
+					type : 'category',
+					data : order_data[0]
+				}
+			],
+			yAxis : [
+				{
+					type : 'value'
+				}
+			],
+			series : [
+				{
+					name:'待确认',
+					type:'bar',
+					data:order_data[1],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name: '平均值'}
+						]
+					},
+					color:['#ff7f50']
+				},
+				{
+					name:'已确认/待支付',
+					type:'bar',
+					data:order_data[2],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#87cefa']
+				},
+				{
+					name:'已支付/待发货',
+					type:'bar',
+					data:order_data[3],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#da70d6']
+				},
+				{
+					name:'已发货/待收货',
+					type:'bar',
+					data:order_data[4],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#32cd32']
+				},
+				{
+					name:'已完成',
+					type:'bar',
+					data:order_data[5],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#83aaf0']
+				},
+				{
+					name:'已取消',
+					type:'bar',
+					data:order_data[6],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#ff87c3']
+				},
+				{
+					name:'已关闭',
+					type:'bar',
+					data:order_data[7],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#c777db']
+				}
+			]
+		};
+
+		//销售概况
+		var option_sale = {
+			title : {
+				text: '销售概况',
+				subtext: ''
+			},
+			tooltip : {
+				trigger: 'axis'
+			},
+			legend: {
+				data:['待确认','已确认/待支付',"已支付/待发货","已发货/待收货","已完成","已取消","已关闭"]
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					magicType : {show: true, type: ['line', 'bar']},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+			xAxis : [
+				{
+					type : 'category',
+					data : sale_data[0]
+				}
+			],
+			yAxis : [
+				{
+					type : 'value'
+				}
+			],
+			series : [
+				{
+					name:'待确认',
+					type:'bar',
+					data:sale_data[1],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name: '平均值'}
+						]
+					},
+					color:['#ff7f50']
+				},
+				{
+					name:'已确认/待支付',
+					type:'bar',
+					data:sale_data[2],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#87cefa']
+				},
+				{
+					name:'已支付/待发货',
+					type:'bar',
+					data:sale_data[3],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#da70d6']
+				},
+				{
+					name:'已发货/待收货',
+					type:'bar',
+					data:sale_data[4],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#32cd32']
+				},
+				{
+					name:'已完成',
+					type:'bar',
+					data:sale_data[5],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#83aaf0']
+				},
+				{
+					name:'已取消',
+					type:'bar',
+					data:sale_data[6],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#ff87c3']
+				},
+				{
+					name:'已关闭',
+					type:'bar',
+					data:sale_data[7],
+					markPoint : {
+						data : [
+							{type : 'max', name: '最大值'},
+							{type : 'min', name: '最小值'}
+						]
+					},
+					markLine : {
+						data : [
+							{type : 'average', name : '平均值'}
+						]
+					},
+					color:['#c777db']
+				}
+			]
+		};
+	}else{
+		var data_order = {
+			total_volume: 263,
+            total_money: 0,
+            title: {
+                "text": "订单数量",
+            },
+            series: [{
+                name: "订单个数",
+                type: "line",
+                itemStyle: {
+                    normal: {
+                        color: "#6cbd40",
+                        lineStyle: {
+                            color: "#6cbd40"
+                        }
+                    }
+                },
+                data: order_info_count[0],
+                markPoint: {
+                    itemStyle: {
+                        normal: {
+                            color: "#6cbd40"
+                        }
+                    },
+                    data: [{
+                        type: "max",
+                        name: "\u6700\u5927\u503c"
+                    }, {
+                        type: "min",
+                        name: "\u6700\u5c0f\u503c"
+                    }]
+                }
+            }],
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    lineStyle: {
+                        "color": "#6cbd40"
+                    }
+                }
+            },
+            toolbox: {
+                show: true,
+                orient: "vertical",
+                right: "20",
+                y: "60",
+                feature: {
+                    magicType: {
+                        "show": true,
+                        type: ["line", "bar"]
+                    },
+                    saveAsImage: {
+                        "show": true
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: {
+                type: "category",
+                boundaryGap: false,
+                axisLine: {
+                    "lineStyle": {
+                        "color": "#ccc",
+                        "width": 0
+                    }
+                },
+                data: order_info_count[1]
+            },
+            yAxis: {
+                type: "value",
+                axisLine: {
+                    "lineStyle": {
+                        "color": "#ccc",
+                        "width": 0
+                    }
+                }
+            }
+		};
+		var data_sale = {
+			total_volume: 263,
+            total_money: 0,
+            title: {
+                "text": "销售额",
+            },
+            series: [{
+                name: "销售额",
+                type: "line",
+                itemStyle: {
+                    normal: {
+                        color: "#6cbd40",
+                        lineStyle: {
+                            color: "#6cbd40"
+                        }
+                    }
+                },
+                data: order_info_amount[0],
+                markPoint: {
+                    itemStyle: {
+                        normal: {
+                            color: "#6cbd40"
+                        }
+                    },
+                    data: [{
+                        type: "max",
+                        name: "\u6700\u5927\u503c"
+                    }, {
+                        type: "min",
+                        name: "\u6700\u5c0f\u503c"
+                    }]
+                }
+            }],
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    lineStyle: {
+                        "color": "#6cbd40"
+                    }
+                }
+            },
+            toolbox: {
+                show: true,
+                orient: "vertical",
+                right: "20",
+                y: "60",
+                feature: {
+                    magicType: {
+                        "show": true,
+                        type: ["line", "bar"]
+                    },
+                    saveAsImage: {
+                        "show": true
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: {
+                type: "category",
+                boundaryGap: false,
+                axisLine: {
+                    "lineStyle": {
+                        "color": "#ccc",
+                        "width": 0
+                    }
+                },
+                data: order_info_amount[1]
+            },
+            yAxis: {
+                type: "value",
+                axisLine: {
+                    "lineStyle": {
+                        "color": "#ccc",
+                        "width": 0
+                    }
+                }
+            }
+		}
+	}
+	
+	//配送方式
+	var option_ship = {
+		title : {
+			text: '配送方式',
+			subtext: '',
+		},
+		tooltip : {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c} ({d}%)"
+		},
+		legend: {
+			data: ship_data[0]
+		},
+		series : [
+			{
+				name: '访问来源',
+				type: 'pie',
+				radius : '55%',
+				center: ['50%', '60%'],
+				data: ship_data[1],
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				},
+				color: colorBox
+			}
+		]
+	};
+	
+	//支付方式
+	var option_pay = {
+		title : {
+			text: '支付方式',
+			subtext: '',
+		},
+		tooltip : {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c} ({d}%)"
+		},
+		legend: {
+			data: pay_data[0]
+		},
+		series : [
+			{
+				name: '访问来源',
+				type: 'pie',
+				radius : '55%',
+				center: ['50%', '60%'],
+				data: pay_data[1],
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				},
+				color: colorBox
+			}
+		]
+	};
+
+	//配送地区
+	var option_area = {
+		title : {
+			text: '配送地区',
+			subtext: '',
+		},
+		tooltip : {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c} ({d}%)"
+		},
+		legend: {
+			data: area_data[0]
+		},
+		series : [
+			{
+				name: '访问来源',
+				type: 'pie',
+				radius : '55%',
+				center: ['50%', '60%'],
+				data: area_data[1],
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				},
+				color: colorBox
+			}
+		]
+	};
+	if(is_multi){
+		//订单概况
+		myChart_order.setOption(option_order);
+		myChart_price.setOption(option_sale);
+	}else{
+		//订单概况
+		if(order_info_show){
+			myChart_order.setOption(data_order);
+			myChart_price.setOption(data_sale);
+		};
+	}
+	//配送方式
+	if(ship_data_show){
+		var myChart_ship = echarts.init(document.getElementById("ship_main"));
+		myChart_ship.setOption(option_ship);
+	};
+	//支付方式
+	if(pay_count_show){
+		var myChart_pay = echarts.init(document.getElementById("pay_main"));
+		myChart_pay.setOption(option_pay);
+	};
+	//配送地区
+	if(area_data_show){
+		var myChart_area = echarts.init(document.getElementById("area_main"));
+		area_chat= myChart_area.setOption(option_area);
+	};
+    window.onresize = function (){
+        myChart_order&&myChart_order.resize();
+        myChart_price&&myChart_price.resize();
+        myChart_ship&&myChart_ship.resize();
+        myChart_pay&&myChart_pay.resize();
+        area_chat&&area_chat.resize();
+    };	
+	//统计数据 end
+</script>

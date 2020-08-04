@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{include file="public/head" /}}
+
+<body>
+    <!--头部-->
+    {{include file="public/header" /}}
+    <!--头部-->
+
+    <div class="contactUs container">
+        <div class="worldMap">
+
+            <img src="__IMAGE__/dtwzhi.png" alt="">
+        </div>
+        <a name="md"></a>
+        <div class="navigationMap">
+            <div class="map" id="map"></div>
+            <div class="k-point">
+                <div class="title">线下体验店</div>
+                <div class="tishi">您现在所在位置</div>
+                <div class="form_con form_horizontal" id="form_con">
+                    <div class="form_group">
+                        <div class="form_item">
+                            <select class="province" name="province" id="param_province"
+                                onchange="provincechange(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
+                                <option>请选择省份</option>
+                            </select>
+                        </div>
+                        <div class="form_item">
+                            <select class="city" name="city" id="param_city"
+                                onchange="accessToStores(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
+                                <option>请选择城市</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="nearby">
+                </div>
+            </div>
+        </div>
+        <div class="companyAddress">
+            <div class="title">公司地址</div>
+            <div class="center">
+                <span>
+                    <img src="__IMAGE__/France.png" alt="">
+                    <p>（法国）梅尔市吉恩•梅莫斯街</p>
+                </span>
+                <span>
+                    <img src="__IMAGE__/China.png" alt="">
+                    <p>（中国）东莞市厚街镇上环北溪路69号</p>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!--底部-->
+    {{include file="public/footer" /}}
+    <!--底部-->
+
+    <!--地图-->
+    <script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=S3mC7ERjKkXI7MnnYusIXG5EbmpWMEuw"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript">
+        // 地图初始化
+
+        var weizhi = ""
+        var map = new BMap.Map("map");
+        var point = new BMap.Point(116.331398, 39.897445);
+        map.centerAndZoom(point, 12);
+        // 创建地址解析器实例
+        var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上,并调整地图视野
+        myGeo.getPoint(weizhi, function (point) {
+            if (point) {
+                map.centerAndZoom(point, 16);
+                map.addOverlay(new BMap.Marker(point));
+            } else {
+                alert("您选择地址没有解析到结果!");
+            }
+        }, "北京市");
+
+        function storeLocation(el) {
+            var arr = document.getElementById("nearby").getElementsByClassName("nearby");
+            for (var i = 0; i < arr.length; i++) {
+                var a = arr[i];
+                a.style.background = "#fff";
+            };
+            el.style.background = "#e9e9e9";
+            let mdTitle = el.children[0].innerText
+            weizhi = el.children[1].innerText
+            myGeo.getPoint(weizhi, function (point) {
+                if (point) {
+                    map.centerAndZoom(point, 16);
+                    map.addOverlay(new BMap.Marker(point));
+                } else {
+                    alert("您选择地址没有解析到结果!");
+                }
+            }, "北京市");
+
+            setTimeout(function () {
+                var opts = {
+                    width: 250,     // 信息窗口宽度    
+                    height: 100,     // 信息窗口高度    
+                    title: mdTitle  // 信息窗口标题   
+                }
+                var infoWindow = new BMap.InfoWindow(weizhi, opts);
+                map.openInfoWindow(infoWindow, map.getCenter());
+            }, 300);
+
+
+        }
+        // 省份初始化
+        $(function () {
+            sendRequest("/shop-region", 'GET', { 'pid': 0 }, function (data) {
+                let dataList = data.data;
+                let provincesDoms = '';
+                for (var i = 0; i < dataList.length; i++) {
+                    $('#param_province').append("<option value=" + dataList[i].id + ">" + dataList[i].name + "</option>");
+
+                }
+
+            });
+        })
+        // 清除城市选项optinos
+        function removeAll() {
+            var obj = document.getElementById('param_city');
+            param_city.options.length = 0;
+        }
+        //获取城市
+        function provincechange(id, text) {
+            weizhi = text
+
+            // geocodeSearch()
+            removeAll()
+            sendRequest("/shop-region", 'GET', { 'pid': id }, function (data) {
+                let dataLists = data.data;
+                dataLists.unshift({ name: "请选择城市", id: "" })
+                for (var i = 0; i < dataLists.length; i++) {
+                    var newOption = document.createElement("option");
+                    newOption.text = dataLists[i].name;
+                    newOption.value = dataLists[i].id;
+                    document.getElementById("param_city").add(newOption);
+                    $('.nearby').remove()
+                }
+            });
+        }
+        //获取城市门店位置
+        function accessToStores(id, text) {
+            $('#nearby').innerHtml = ""
+            $('.nearby').remove()
+            weizhi = text
+            sendRequest("/treca-shop", 'GET', {
+                is_enable: 1,
+                city: id,
+                is_more: 1
+            }, function (data) {
+                let rouData = data.data
+                let provincesDoms = '';
+                adds = []
+                if (rouData.length != 0) {
+                    for (var i = 0; i < rouData.length; i++) {
+                        provincesDoms += '<div class="nearby" onclick="storeLocation(this)"> <div class="nearby_title"> ' + rouData[i].title + '</div><div class="nearby_center"> ' + rouData[i].shop_address + '</div> </div>'
+                    }
+                } else {
+                    provincesDoms += '<div class="nearby">< div class="nearby_title" > 该城市暂无门店</div ></div >';
+                }
+                $('#nearby').append(provincesDoms);
+                if (adds.length != 0) {
+                    weizhi = adds[0]
+
+                }
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

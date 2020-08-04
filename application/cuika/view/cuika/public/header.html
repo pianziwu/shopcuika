@@ -1,0 +1,246 @@
+<header>
+    <div class="navbar">
+        <div class="search-btns">
+            <span><a href="http://www.treca.fr/" target="_blank">法国官网</a></span>
+            <div class="search-form">
+                <form action="/product/search" method="GET">
+                    <input class="search-ipt" name="treca_keyword" value="{{$Think.GET.treca_keyword}}" type="text"
+                        placeholder="产品搜索">
+                    <i class="search-icon-box"><img class="search-icon" src="__IMAGE__/search.png" alt=""></i>
+                </form>
+            </div>
+        </div>
+        <div class="logo-chanel">
+            <a href="/"><img src="{{:AttachmentPathViewHandle(MyC('home_site_logo_wap'))}}" alt=""></a>
+        </div>
+        <div class="navbar-btns">
+            {{if empty($user)}}
+            <span class="personals">
+                <a href="/loginInfo"><img src="__IMAGE__/personal.png" alt=""></a>
+            </span>
+            {{else /}}
+            <span class="personal" onclick="getCartList();">
+                <a href="javascript:;"><img src="__IMAGE__/personal.png" alt=""></a>
+            </span>
+            {{/if}}
+            <!-- <span><a href="">CN</a> <a href="">/EN</a></span> -->
+            <span class="other-site"><a href="/address#md">线下体验店</a></span>
+        </div>
+    </div>
+    <div class="navigation-menu">
+        <div class="menu-toggle-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-list">
+            {{if !empty($nav_header)}}
+            {{foreach $nav_header as $nav}}
+            {{if empty($nav['items'])}}
+            <div class="menu-item">
+                <div class="item-title">
+                    <a href="{{$nav.url}}">{{$nav.name}}</a>
+                </div>
+            </div>
+            {{else /}}
+            <div class="menu-item">
+                <div class="item-title hasdrop"><a href="{{$nav.url}}{{if $nav.value gt 0}}/{{$nav.value}}{{/if}}">{{$nav.name}}</a>
+                    <div class="toggle-btn"></div>
+                </div>
+                <div class="drop-down">
+                    {{foreach $nav.items as $navs}}
+                    <a href="{{$navs.url}}{{if $nav.value gt 0}}/{{$navs.value}}{{/if}}">{{$navs.name}}</a>
+                    {{/foreach}}
+                </div>
+            </div>
+            {{/if}}
+            {{/foreach}}
+            {{/if}}
+            <div class="menu-item menu-item-m">
+                <div class="item-title">
+                    <a href="http://www.treca.fr/">法国官网</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="slide-cart">
+    <div class="slide-cart-close"><img src="__IMAGE__/product_cd_close.png" alt=""></div>
+    <div class="pop-up-box">
+        <div class="dlgw">
+            <div class="centent">
+                <div class="product">
+                    <div class="product_img">
+                        <img src="" alt="">
+                    </div>
+                    <div class="product_text"></div>
+                    <span class="stock"></span>
+                </div>
+            </div>
+            <div class="gdtx">
+                <span class="xian">
+                    <span></span>
+                </span> <span>购物袋内更多产品</span> <span class="xian">
+                    <span></span>
+                </span>
+            </div>
+            <div class="button"><a href="/cart">结算</a></div>
+            <div class="jumpList">
+                <div class="nape">
+                    <a href="/cart">
+                        <img src="__IMAGE__/gwd.png" alt="">
+                        <span>购物袋(<i class="cartListCount">0</i>)</span>
+                    </a>
+                </div>
+                <div class="nape">
+                    <a href="/favor">
+                        <img src="__IMAGE__/shouc.png" alt="">
+                        <span>收藏</span>
+                    </a>
+                </div>
+                <div class="nape">
+                    <a href="{{:url('cuika/Order/Index')}}">
+                        <img src="__IMAGE__/ddan.png" alt="">
+                        <span>订单</span>
+                    </a>
+                </div>
+                <div class="nape">
+                    <a href="/treca-user">
+                        <img src="__IMAGE__/zhangh.png" alt="">
+                        <span>账户</span>
+                    </a>
+                </div>
+                <div class="nape login-out">
+                    <img src="__IMAGE__/denglu.png" alt="">
+                    {{if empty($user)}}
+                    <span><a class="loginLink" href="/loginInfo">登录</a></span>
+                    {{else /}}
+                    <span><a class="loginLink" href="/logout">退出</a></span>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 侧边购物车小图标 -->
+<div class="fixed-cart">
+    <img src="__IMAGE__/fixed_cart.png">
+    <span class="productCount">0</span>
+</div>
+<script>
+    // getCartList();
+    function getCartList() {
+        var tempDoms = '';
+        sendRequest('/api/cart', 'GET', {}, function (data) {
+            var dataList = data.data.data || [];
+            var taotalCount = 0;
+            for(var i = 0; i < dataList.length; i++){
+                tempDoms += "<div class='product'><div class='product_img'><img src="+dataList[i].images+" alt=''></div><div class='product_text'>"+dataList[i].title+"</div><span class='stock'>x "+dataList[i].stock+"</span></div>"
+                taotalCount += Number(dataList[i].stock);
+            }
+            $('.slide-cart .centent').html(tempDoms);
+            $('.cartListCount').text(taotalCount);
+            // dataList.forEach(el => {
+            //     tempDoms += `<div class="product">
+            //         <div class="product_img">
+            //             <img src="${el.images}" alt="">
+            //         </div>
+            //         <div class="product_text">${el.title}</div>
+            //         <span class="stock">x ${el.stock}</span>
+            //     </div>`
+            //     taotalCount += Number(el.stock);
+            // });
+        });
+    }
+    // 点击购物车
+    $('.fixed-cart').on('click',function(){
+        window.location.href = "/cart";
+    })
+    // 获取购物车总数
+    getProductCount();
+    function getProductCount(){
+        sendRequest('/api/cart', 'GET', {}, function (data) {
+            var dataList = data.data.data || [];
+            var taotalCount = 0;
+            for(var i = 0; i < dataList.length; i++){
+                taotalCount += Number(dataList[i].stock);
+            }
+            $('.fixed-cart .productCount').text(taotalCount);
+        })
+    }
+
+
+
+    $(function(){
+        $('.addFixedBtn').on('click',function(){
+            let _this = $(this);
+            let goodsId = $(this).attr('data-goodsid');
+            let selectedFlag = true;
+
+            // 数量
+            let stock = $('#text_box').val();
+
+            // 是否选中规格
+            $('.sku-items').each(function(idx,el){
+                if(!$(el).find('.sku-line').hasClass('selected')){
+                    selectedFlag = false;
+                }
+            })
+
+            //    规格
+            var optionsArr = [];
+            var options = {};
+
+            $('.sku-items').each(function(idx,el){
+                let typeValue = $(el).find('.sku-line.selected').data('type-value')
+                let value = $(el).find('.sku-line.selected').data('value');
+                // let spec = "spec["+idx+"][type]";
+                // let specValue = "spec["+idx+"][value]";
+
+                optionsArr.push({
+                    type: typeValue,
+                    value: value
+                });
+            })
+
+            optionsArr.forEach(function(i,index){
+                let spec = "spec["+index+"][type]";
+                let specValue = "spec["+index+"][value]";
+                options[spec] = i.type;
+                options[specValue] = i.value;
+                
+            })
+
+            options['stock'] = stock;
+            options['goods_id'] = goodsId;
+
+
+
+            if(selectedFlag){
+                productAjax(_this,options);
+            }else{
+                layer.msg('请选择完整规格!');
+            }  
+        })
+    })
+
+    function productAjax(_this,options) {
+      sendRequest('/cart', 'POST', options, function(data){
+        if (data.code == 0) {
+            getProductCount();
+            _this.hasClass('shopBtn') ? 
+            layer.msg('成功加入购物车',{time: 1500},function(){
+                window.location.href = "/cart";
+            })
+                                    : 
+            layer.msg('成功加入购物车');
+        } else if (data.code == -400) {
+          layer.msg(data.msg, { time: 1000, }, function () {
+            $('#loginAlert').fadeIn(200);
+          });
+        } else {
+           console.log("加入购物车失败" + data.code);
+        }
+      });
+    }
+</script>

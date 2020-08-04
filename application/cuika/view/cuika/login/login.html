@@ -1,0 +1,64 @@
+<!DOCTYPE html >
+<html lang="en">
+
+{{include file="public/head" /}}
+
+<body>
+
+<!--头部-->
+{{include file="public/header" /}}
+<!--头部-->
+
+<div class="main login-page">
+    <h2 class="page-title">请登录</h2>
+    <form>
+        <div class="content">
+            <div class="form-container">
+                <div class="ipt-group">
+                    <input name="accounts" type="text" placeholder="TRECA ID">
+                </div>
+                <div class="ipt-group">
+                    <input name="pwd" type="password" placeholder="密码">
+                </div>
+                <p class="tip">你的 TRECA ID 是你用来登录线上商城的电子邮件地址或手机号码</p>
+                <button class="sub-btn" type="button" id="login_but">登录</button>
+            </div>
+            <p class="forget"><a href="/forgetPwdInfo">忘记了 TRECA ID 或密码？</a></p>
+            <p class="create"><a href="/regInfo">没有 TRECA ID？立即创建一个。</a></p>
+        </div>
+    </form>
+</div>
+
+<!--底部-->
+{{include file="public/footer" /}}
+<!--底部-->
+
+<script>
+
+    // 获取短信验证码
+    $('#login_but').on('click', function () {
+        var phone = $('[name="accounts"]').val()
+            ,pwd = $('[name="pwd"]').val();
+        if(!phone.length){
+            layer.msg('登录账号有误');
+            return false; 
+        }
+        if(pwd.length < 6 || pwd.length > 18){
+            layer.msg('密码格式 6~18 个字符之间');
+            return false; 
+        }
+        sendRequest('/login','POST',{accounts: phone,pwd: pwd},function(data){
+            if(data.code == 0){
+                layer.msg(data.msg,{time: 1000,},function(){
+                    window.history.go(-1);
+                });
+            }else{
+                layer.msg(data.msg);
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>

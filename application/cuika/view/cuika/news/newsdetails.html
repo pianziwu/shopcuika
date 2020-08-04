@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{include file="public/head" /}}
+
+<body>
+
+{{include file="public/header" /}}
+
+<div class="newsdetails">
+    <!-- banner -->
+    <div class="banner">
+        <div class="container">
+            <img src="__IMAGE__/newsdetails_banner_bg.jpg">
+        </div>
+    </div>
+    <div class="search-bar">
+        <div class="container">
+            <div class="search-bar-l">
+                <ul class="container1200">
+                    <li>您的位置：</li> 
+                    <li><a href="..">首页&nbsp; >&nbsp; </a></li>
+                    <li><a href="/news">新闻中心&nbsp; >&nbsp; </a></li>
+                    <li><a href="/news?cat_id={{$data.article_category_id}}">{{$data.article_category_name}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="ndetails">
+        <div class="container1200">
+            <div class="ndetails-l">
+                <div class="bdsharebuttonbox bdshare-button-style0-16" data-tag="share_1" data-bd-bind="1585549224442">
+                    <a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">微博</a>
+                    <a class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+                    <a class="bds_qzone" data-cmd="qzone" href="#" title="分享到QQ空间">QQ<br>空间</a>
+                    <a class="bds_more" data-cmd="more">更多</a>
+                </div>
+            </div>
+            <div class="ndetails-c">
+                <div class="newsconT">
+                    <img src="{{$data['head_img'] ?? ''}}" class="newTimg">
+                    <div class="title">
+                        <h1>{{$data['title'] ?? ''}}</h1>
+                        <ul>
+                            <li>作者: 崔佧</li>
+                            <li>来源: {{$data['article_category_name'] ?? ''}}</li>
+                            <li>{{$data['add_time_time'] ?? ''}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="newsconM">
+                    <div>
+                        {{$data['content']|raw}}
+                    </div>
+                    <div class="bdshare-box">
+                        <div class="bd-box">
+                            <div class="bdsharebuttonbox" data-tag="share_1">
+                                <a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">微博</a>
+                                <a class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+                                <a class="bds_qzone" data-cmd="qzone" href="#" title="分享到QQ空间">QQ<br>空间</a>
+                                <a class="bds_more" data-cmd="more">更多</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="newsconB">
+                    <div class="labels">
+                        <div class="biaoq-box">
+                            <p>标签:</p>
+                            <ul>
+                                <li><a href='javascript:;'>百年崔佧</a></li>
+                                <li><a href='javascript:;'>天然蚕丝</a></li>
+                                <li><a href='javascript:;'>科技应用</a></li>
+                                <li><a href='javascript:;'>专利技术</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="goback"><a href="/news?cat_id={{$data.article_category_id}}"></a></div>
+                    </div>
+                    <div class="copyright-notice">
+                        <p>
+                            【版权提示】崔佧倡导尊重与保护知识产权。未经许可，任何人不得复制、转载、或以其他方式使用本网站的内容。如发现本站文章存在版权问题，烦请提供版权疑问、身份证明、版权证明、联系方式等联系客服QQ:4000399386，我们将及时沟通与处理。</p>
+                    </div>
+                    <div class="npbutton">
+                        <ul>
+                            <li><a href="{{$last_next['last']['url'] ?? 'javascript:;'}}">{{$last_next['last']['title'] ?? '没有啦！'}}</a></li>
+                            <li><a href="{{$last_next['next']['url'] ?? 'javascript:;'}}">{{$last_next['next']['title'] ?? '没有啦！'}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="ndetails-r">
+                <div class="top-ranking">
+                    <div class="title">
+                        <p>相关文章</p>
+                        <div class="more"><a href="/news" target="_blank">查看更多></a></div>
+                    </div>
+                    <ul>
+                        {{volist name="like_list" id="vo" empty="暂无数据"}}
+                            <li>
+                                <a href="{{$vo.url}}" title="{{$vo.title}}" target="_blank">
+                                    <div class="tjimg">
+                                        <img src="{{$vo.head_img}}" alt="">
+                                    </div>
+                                    <h4>{{$vo.title}}</h4>
+                                </a>
+                            </li>
+                        {{/volist}}
+                    </ul>
+                </div>
+                <div class="top-ranking">
+                    <div class="title">
+                        <p>热门文章</p>
+                        <div class="more"><a href="/news" target="_blank">查看更多></a></div>
+                    </div>
+                    <ul>
+                        {{volist name="hot_list" id="vo" empty="暂无数据"}}
+                        <li>
+                            <a href="{{$vo.url}}" title="{{$vo.title}}" target="_blank">
+                                <h4>{{$vo.title}}</h4>
+                            </a>
+                        </li>
+                        {{/volist}}
+                    </ul>
+                </div>
+                <!-- <div class="top-ranking">
+                    <div class="title">
+                        <p>热搜文章</p>
+                        <div class="more"><a href="news.html" target="_blank">查看更多></a></div>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="./newsdetails.html" title="1、亚马逊即将在越南市场启动网络······" target="_blank">
+                                <div class="tjimg">
+                                    <img src="__IMAGE__/newsdetails_p7.jpg" alt="">
+                                </div>
+                                <h4>亚马逊即将在越南市场 启动网络零售平台</h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./newsdetails.html" title="①.具备一定的商业背景和建材家居行业销" target="_blank"><h4>
+                                ①.具备一定的商业背景和建材家居行业销</h4></a>
+                        </li>
+                        <li>
+                            <a href="./newsdetails.html" title="③.具有致力于国际品牌家具产品的销售热情，" target="_blank"><h4>
+                                ③.具有致力于国际品牌家具产品的销售热情，</h4></a>
+                        </li>
+                        <li>
+                            <a href="./newsdetails.html" title="④.了解、信任法国TRECA床垫，" target="_blank"><h4>
+                                ④.了解、信任法国TRECA床垫，</h4></a>
+                        </li>
+                        <li>
+                            <a href="./newsdetails.html" title="⑤.与当地政府相关职能部门" target="_blank"><h4>⑤.与当地政府相关职能部门、</h4>
+                            </a>
+                        </li>
+                    </ul>
+                </div> -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{{include file="public/footer" /}}
+
+</body>
+<script>
+    // 百度分享插件
+    var shareimg = '';
+    ($('.newsconM img')[0]) ? shareimg = $('.newsconM img')[0].src : shareimg = '';
+    var bdtitle = $('.ndetails-c .newsconT .title h1').html();
+    window._bd_share_config = {
+        common: {
+            bdText: bdtitle,
+            bdPic: shareimg
+        },
+        share: [{
+            "bdSize": 16
+        }],
+    };
+    with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion==' + ~(-new Date() / 36e5)];
+
+    //分享栏固定
+    $(document).scroll(function () {
+        var distance = $(document).scrollTop();
+        if (distance > 400) {
+            if (!$('.ndetails-l').hasClass('sharefixed')) {
+                $('.ndetails-l').addClass('sharefixed')
+            }
+        }
+        if (distance < 460) {
+            if ($('.ndetails-l').hasClass('sharefixed')) {
+                $('.ndetails-l').removeClass('sharefixed')
+            }
+        }
+    })
+</script>
+
+</html>

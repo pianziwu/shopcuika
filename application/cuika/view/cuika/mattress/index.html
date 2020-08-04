@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+{{include file="public/head" /}}
+<link rel="stylesheet" href="__CSS__/product-style.min.css">
+
+<body>
+  <!-- 头部 -->
+  {{include file="/public/header"}}
+  <!-- 头部 -->
+
+  <!-- 床垫聚合页 -->
+  <main>
+    <div class="z-product-main z-product-page">
+      <section class="container">
+        <div class="banner banner-cd">
+          <img src="__IMAGE__/cd_index_banner.jpg" alt="banner图">
+        </div>
+
+        <div class="content">
+          <!-- 无限系列 -->
+          <div class="content-1">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="video">
+                  <video src="" poster="__IMAGE__/cd_index_bg01.jpg"></video>
+                  <p class="video-btn"><span></span></p>
+                </div>
+              </div>
+              <div class="col-md-4 info-layout">
+                <div class="info cd-info">
+                  <h3 class="text-uppercase">INFINITE无限系列</h3>
+                  <span>梦旅的启程</span>
+                  <div>
+                    <p>将异国的想象，像绒毛般缓缓铺开，温柔以抚平， 一室有限，梦旅无限。</p>
+                  </div>
+                  <a href="/mattress/infinite?category_id={{$data_list.category_id.infinite}}" class="link-more">了解系列详情 ></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-product">
+              {{if !empty($data_list.infinite.data)}}
+              {{foreach $data_list.infinite.data as $goods}}
+              <div class="item">
+                <a href="/product/detail/{{$goods.id}}">
+                  <div class="img">
+                    <img src="{{$goods.images}}" alt="产品图">
+                  </div>
+                  <div class="word">
+                    <h3>{{$goods.title}}</h3>
+                    <p>¥{{$goods.price}}</p>
+                  </div>
+                </a>
+              </div>
+              {{/foreach}}
+              {{/if}}
+            </div>
+          </div>
+          <!-- 星球坐标系列 -->
+          <div class="content-1">
+
+            <div class="row">
+              <div class="col-md-4 info-layout info-layout-2">
+                <div class="info cd-info">
+                  <h3 class="text-uppercase">TERREdessens星球坐标系列</h3>
+                  <span>自然赋予的软</span>
+                  <div>
+                    <p>草木和工艺、自然和创造的平衡，在这个星球里，不期而遇。</p>
+                  </div>
+                  <a href="/mattress/planet-coordinates?category_id={{$data_list.category_id.planet_coordinates}}" class="link-more">了解系列详情 ></a>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="video video-2">
+                  <video src="" poster="__IMAGE__/cd_index_bg02.jpg"></video>
+                  <p class="video-btn"><span></span></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-product">
+              {{if !empty($data_list.planet_coordinates.data)}}
+              {{foreach $data_list.planet_coordinates.data as $goods}}
+              <div class="item">
+                <a href="/product/detail/{{$goods.id}}">
+                  <div class="img">
+                    <img src="{{$goods.images}}" alt="产品图">
+                  </div>
+                  <div class="word">
+                    <h3>{{$goods.title}}</h3>
+                    <p>¥{{$goods.price}}</p>
+                  </div>
+                </a>
+              </div>
+              {{/foreach}}
+              {{/if}}
+            </div>
+          </div>
+          <!-- 梦境系列 -->
+          <div class="content-1">
+
+            <div class="row">
+              <div class="col-md-8">
+                <div class="video">
+                  <video src="" poster="__IMAGE__/cd_index_bg03.jpg"></video>
+                  <p class="video-btn"><span></span></p>
+                </div>
+              </div>
+              <div class="col-md-4 info-layout">
+                <div class="info cd-info">
+                  <h3 class="text-uppercase">Micro-Climats梦境系列</h3>
+                  <span>守护梦境的骑士</span>
+                  <div>
+                    <p>科技将温度与湿度驯服，好让梦境在最安适的环境下
+                      自然生长。</p>
+                  </div>
+                  <a href="/mattress/dreamland?category_id={{$data_list.category_id.dreamland}}" class="link-more">了解系列详情 ></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-product">
+              {{if !empty($data_list.dreamland.data)}}
+              {{foreach $data_list.dreamland.data as $goods}}
+              <div class="item">
+                <a href="/product/detail/{{$goods.id}}">
+                  <div class="img">
+                    <img src="{{$goods.images}}" alt="产品图">
+                  </div>
+                  <div class="word">
+                    <h3>{{$goods.title}}</h3>
+                    <p>¥{{$goods.price}}</p>
+                  </div>
+                </a>
+              </div>
+              {{/foreach}}
+              {{/if}}
+            </div>
+          </div>
+        </div>
+
+
+
+      </section>
+    </div>
+  </main>
+  <!-- 床垫聚合页 -->
+
+
+  <!-- 底部 -->
+  {{include file="/public/footer"}}
+  <!-- 底部 -->
+
+  <script>
+
+
+    $('.nav-list .nav-menu .nav-menu-btn').on("click", function () {
+      let idx = $(this).index();
+      $(this).find('.icon-height').toggleClass('down');
+      $(this).find('.icon-width').toggleClass('down');
+
+      const navSon = $(this).parent().find('.nav-son-list');
+      if (navSon.is(":hidden")) {
+        navSon.slideDown();
+      } else {
+        navSon.slideUp();
+      }
+
+    });
+  </script>
+</body>
+
+</html>

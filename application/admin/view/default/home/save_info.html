@@ -1,0 +1,109 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+	<div class="content">
+		<!-- form start -->
+		<form class="am-form form-validation view-save" action="{{:MyUrl('admin/home/save')}}" method="POST"
+			request-type="ajax-url" request-value="{{:MyUrl('admin/home/index', $params)}}"
+			enctype="multipart/form-data">
+			<legend>
+				<span class="am-text-default">
+					{{if empty($data_list['id'])}}
+					添加
+					{{else /}}
+					编辑
+					{{/if}}
+				</span>
+				<a href="{{:MyUrl('admin/home/index', $params)}}"
+					class="am-fr am-text-sm am-margin-top-xs am-icon-mail-reply"> 返回</a>
+			</legend>
+
+			<div class="am-form-group">
+				<label>数据展示类型</label>
+				<select name="show_type" class="am-radius chosen-select" data-placeholder="可选择..."
+					data-validation-message="请选择类型" required>
+					<option value="">可选择...</option>
+					
+					{{if !empty($show_type)}}
+					{{foreach $show_type as $key => $v}}
+					<option value="{{$key}}"{{if !empty($data_list.show_type)}} {{if $key eq $data_list.show_type}} selected {{/if}}{{/if}}>{{$v}}</option>
+					{{/foreach}}
+					{{/if}}
+				</select>
+			</div>
+				<div class="am-form-group">
+				<label>视频链接</label>
+				<input type="text" name="video_url" placeholder="置顶视频必填" maxlength="255"
+					data-validation-message="标题格式最多 255 个字符" class="am-radius" {{if !empty($data_list)}}
+					value="{{$data_list.video_url}}" {{/if}} />
+			</div>
+
+			<div class="am-form-group">
+				<label>标题</label>
+				<input type="text" name="title" placeholder="标题" maxlength="255"
+					data-validation-message="标题格式最多 255 个字符" class="am-radius" {{if !empty($data_list)}}
+					value="{{$data_list.title}}" {{/if}} />
+			</div>
+
+			<div class="am-form-group">
+				<label>副标题</label>
+				<input type="text" name="subtitle" placeholder="标题" maxlength="60"
+					data-validation-message="标题格式最多 255 个字符" class="am-radius" {{if !empty($data_list)}}
+					value="{{$data_list.subtitle}}" {{/if}} />
+			</div>
+
+			<div class="am-form-group">
+				<label>描述</label>
+				<textarea rows="5" name="describe" maxlength="2500" class="am-radius" placeholder="描述"
+					data-validation-message="描述最大 2500 个字符">{{if !empty($data_list)}}{{$data_list.describe}}{{/if}}</textarea>
+			</div>
+
+			<div class="am-form-group">
+				<label>商品ID</label>
+				<input type="number" placeholder="请填写正确的商品ID" name="goods_id" min="0" class="am-radius"
+					value="{{if isset($data_list['goods_id'])}}{{$data_list.goods_id}}{{else /}}0{{/if}}" />
+			</div>
+
+			<div class="am-form-group am-form-file">
+				<label class="block">展示图片</label>
+				<ul class="plug-file-upload-view slide-images_url-images-view" data-form-name="images_url"
+					data-max-number="1" data-delete="0" data-dialog-type="images">
+					<li>
+						<input type="text" name="images_url"
+							value="{{if !empty($data_list['images_url'])}}{{$data_list.images_url}}{{/if}}"
+							data-validation-message="请上传图片" />
+						<img
+							src="{{if !empty($data_list['images_url'])}}{{$data_list.images_url}}{{else /}}{{$attachment_host}}/static/admin/default/images/default-images.jpg{{/if}}" />
+					</li>
+				</ul>
+				<div class="plug-file-upload-submit" data-view-tag="ul.slide-images_url-images-view">+上传图片</div>
+			</div>
+
+			<div class="am-form-group">
+				<label>顺序</label>
+				<input type="number" placeholder="顺序" name="sort" min="0" max="255"
+					data-validation-message="顺序 0~255 之间的数值" class="am-radius"
+					value="{{if isset($data_list['sort'])}}{{$data_list.sort}}{{else /}}100{{/if}}" required />
+			</div>
+
+			<div class="am-form-group">
+				<label class="block">是否启用</label>
+				<input name="is_enable" value="1" type="checkbox" data-off-text="否" data-on-text="是" data-size="xs"
+					data-on-color="success" data-off-color="default" data-handle-width="50" data-am-switch
+					{{if (!empty($data_list) and $data_list['is_enable'] eq 1) or empty($data_list)}}checked="true" {{/if}} />
+			</div>
+			<div class="am-form-group am-form-group-refreshing">
+				<input type="hidden" name="id" {{if !empty($data_list)}} value="{{$data_list.id}}" {{/if}} />
+				<button type="submit" class="am-btn am-btn-primary am-radius btn-loading-example am-btn-sm am-btn-block"
+					data-am-loading="{loadingText:'处理中...'}">保存</button>
+			</div>
+		</form>
+		<!-- form end -->
+	</div>
+</div>
+<!-- right content end  -->
+
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->

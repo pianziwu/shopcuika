@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+{{include file="public/head" /}}
+<body style="background: #f3efe7;">
+{{include file="public/header" /}}
+
+    <div class="main view-order-page">
+        {{if count($data_list)>0 }}
+        <p class="treca-tit">您的所有订单</p>
+        {{else}}
+        <p class="treca-tit">您还没有订单</p>
+        {{/if}}
+        {{volist name="data_list" id="vo"}}
+        <div class="view-order-box" data-order-id="{{$vo.id}}">
+
+            <div class="order-item">
+              <div class="order-item-l">
+                  {{volist name="$vo.items" id="good"}}
+                  <div class="order-item-l-list">
+                  <img src="{{$good.images}}" alt="{{$good.title}}">
+                  <p>{{$good.title}}</p>
+                  <span>￥{{$good.price}}</span>
+                  <span style="white-space: nowrap;">* {{$good.buy_number}}</span>
+                </div>
+                  {{/volist}}
+              </div>
+              <div class="order-item-r">
+                <span>￥{{$vo.price}}</span>
+                {{if $vo.pay_status == 1}}
+                <p class="sure-status">
+                  {{$vo.order_status.desc}}
+                  <a href="{{:url('index/order/detail',['id'=>$vo.id])}}">订单详情</a>
+                </p>
+                {{else /}}
+                  <div class="sure-status">
+                    <p>{{$vo.order_status.desc}}</p>
+                    
+                  </div>
+                {{/if}}
+                <!-- <p>{{$vo.order_status.desc}}</p> -->
+                <div class="order-btn">
+                    {{if $vo.order_status.code == 5}}
+                    <a href="javascript:;" data-order-id="{{$vo.id}}" class="order-delete" style="color: #fff;background-color: #f7234c"><span></span>删除</a>
+                    {{elseif $vo.pay_status == 1}}
+                    <a href="javascript:;" data-order-id="{{$vo.id}}" class="order-cancel" style="color: #fff; background:#8d6945;"><span></span>确认收货</a>
+                    {{else}}
+                    <a href="{{:url('cuika/order/pay',['id'=>$vo.id,'is_pay_auto'=>1])}}"><span></span>支付</a>
+                    <a href="javascript:;" data-order-id="{{$vo.id}}" class="order-cancel" style="color: #fff;"><span></span>取消</a>
+                    {{/if}}
+                </div>
+              </div>
+            </div>
+        </div>
+        {{/volist}}
+    </div>
+{{include file="public/footer" /}}
+
+<script>
+    
+      $(document).ready(function(){
+          $('.order-cancel').click(function() {
+              let order_id = $(this).attr('data-order-id');
+              let url = "/order/cancel";
+              sendRequest(url,'POST',{"id": order_id},function(data){
+                window.location.reload();
+              })
+          });
+          $('.order-delete').click(function() {
+              let order_id = $(this).attr('data-order-id');
+              let url = "/order/del";
+              sendRequest(url,'DELETE',{"id": order_id},function(data){
+                window.location.reload();
+              })
+          });
+          
+      });
+
+    </script>
+</body>
+</html>

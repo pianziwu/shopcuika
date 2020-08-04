@@ -1,0 +1,803 @@
+<!DOCTYPE html >
+<html lang="en">
+
+{{include file="public/head" /}}
+<script src="__JS__/swiper.min.js"></script>
+<script src="__JS__/turn.min.js"></script>
+<body>
+
+<!--头部-->
+{{include file="public/header" /}}
+<!--头部-->
+<div class="main brand-story">
+    <div class="banner container">
+        <img src="__IMAGE__/brand_story_bannner.jpg" alt="">
+        <div class="banner-txt">
+            <div class="banner-txt-bg">
+                <img src="__IMAGE__/brand_story_banner_book_left.png" alt="">
+                <img src="__IMAGE__/brand_story_banner_book_09.jpg" alt="">
+                <div class="text">
+                    <p>TRECA源自法国</p>
+                    <p class="">拥有近百年制床历史</p>
+                    <p class="phonehide">秉承HAUTE COUTURE的精湛工艺</p>
+                    <p class="phonehide">尖端的环保理念和法国高级定制的优秀传统</p>
+                    <p class="phonehide">由欧洲名师执掌设计床体</p>
+                    <p class="phonehide">打造舒适尊贵床垫</p>
+                    <p class="phonehide">受到众多政界名流、娱乐体育明星的青睐</p>
+                    <p class="phonehide">有着全球高端床垫第一品牌的地位</p>
+                    <p class="phonehide">享有“睡眠奢侈品”的美誉</p>
+                    <p class="phonehide">更被誉为“创造睡眠艺术的专家”</p>
+                    <p class="phonehide">成就了全球睡眠艺术品的传奇地位</p>
+                </div>
+            </div>
+            <div class="banner-txt-c">
+                <div id="flipbook" style="left:50%;">
+                    <div class="hard"></div>
+                    <div class="hard"></div>
+                    <div>
+                        <div class="page-img">
+                            <img src="__IMAGE__/brand_story_banner_book_01.jpg" alt="">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page-img">
+                            <img src="__IMAGE__/brand_story_banner_book_02.jpg" alt="">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page-img">
+                            <img src="__IMAGE__/brand_story_banner_book_03.jpg" alt="">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page-img">
+                            <img src="__IMAGE__/brand_story_banner_book_04.jpg" alt="">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page-img">
+                            <img src="__IMAGE__/brand_story_banner_book_05.jpg" alt="">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page-img">
+                            <img src="__IMAGE__/brand_story_banner_book_06.jpg" alt="">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page-img">
+                            <img src="__IMAGE__/brand_story_banner_book_07.jpg" alt="">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page-img">
+                            <img src="__IMAGE__/brand_story_banner_book_08.jpg" alt="">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page-img">
+                            <img src="__IMAGE__/brand_story_banner_book_09.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="hard"></div>
+                    <div class="hard"></div>
+                </div>
+                <div class="left" style="display:none;">
+                    <p>TRECA源自法国</p>
+                    <p>拥有近百年制床历史</p>
+                    <p>秉承HAUTE COUTURE的精湛工艺</p>
+                    <p>尖端的环保理念和法国高级定制的优秀传统</p>
+                    <p>由欧洲名师执掌设计床体</p>
+                    <p>打造舒适尊贵床垫</p>
+                    <p>受到众多政界名流、娱乐体育明星的青睐</p>
+                    <p>有着全球高端床垫第一品牌的地位</p>
+                    <p>享有“睡眠奢侈品”的美誉</p>
+                    <p>更被誉为“创造睡眠艺术的专家”</p>
+                    <p>成就了全球睡眠艺术品的传奇地位</p>
+                </div>
+                <div class="right" style="display:none;">
+                </div>
+            </div>
+            <!-- <div class="cover-box"></div> -->
+        </div>
+    </div>
+    <section class="s1 container">
+        <div class="mode-title">
+            <div class="b-t">百年TRECA  匠心传承</div>
+        </div>
+        <div class="swiper-con">
+            <div class="swiper-container about-swiper2 pc-swiper">
+                <div class="swiper-wrapper">
+                    {{volist name="chronicle" id="vo" mod="2" empty="暂无数据"}}
+                    {{eq name="mod" value="0"}}
+                    <div class="swiper-slide">
+                        <div class="s1-swiper">
+                    {{/eq}}        
+                            <div class="swiper-item">
+                                <div class="swiper-listc">
+                                    <div class="img">
+                                        <img src="{{$vo.head_img}}" alt="">
+                                    </div>
+                                    <div class="text">
+                                        <p class="year">
+                                            {{$vo.year}}
+                                        </p>
+                                        <p>{{$vo.synopsis}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                    {{eq name="mod" value="1"}}        
+                        </div>
+                    </div>
+                    {{/eq}}
+                    {{if condition="$i eq count($chronicle)"}}
+                    {{eq name="mod" value="0"}}
+                        </div>
+                    </div>
+                    {{/eq}}
+                    {{/if}}
+                    {{/volist}}
+                </div>
+            </div>
+            <div class="swiper-container about-swiper1 ph-swiper">
+                <div class="swiper-wrapper">
+                    {{volist name="chronicle" id="vo" mod="2" empty="暂无数据"}}
+                    <div class="swiper-slide">
+                        <div class="swiper-item">
+                            <div class="swiper-listc">
+                                <div class="img">
+                                    <img src="{{$vo.head_img}}" alt="">
+                                </div>
+                                <div class="text">
+                                    <p class="year">
+                                        {{$vo.year}}
+                                    </p>
+                                    <p>{{$vo.synopsis}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/volist}}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s2">
+        <div class="container">
+            <div class="mode-title">
+                <div class="b-t">TA们都是崔佧的忠实用户</div>
+            </div>
+            <div class="swiper-container s2-swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <ul class="clearfix">
+                            <li>
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_1.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>法国前总统</h5>
+                                        <p>雅克·希拉克</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="img-right">
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_4.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>法国前总统</h5>
+                                        <p>尼古拉·萨科齐</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="swiper-slide">
+                        <ul class="clearfix">
+                            <li>
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_2.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>德国总理</h5>
+                                        <p>安格拉·默克尔</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="img-right">
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_5.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>国际影星</h5>
+                                        <p>安吉丽娜•朱莉</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="swiper-slide">
+                        <ul class="clearfix">
+                            <li>
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_3.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>俄罗斯总统</h5>
+                                        <p>普京</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="img-right">
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_6.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>国际影星</h5>
+                                        <p>凯瑟琳•德纳芙</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="swiper-slide">
+                        <ul class="clearfix">
+                            <li>
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_7.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>法国天王级歌星</h5>
+                                        <p>帕特里克•布鲁尔</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="img-right">
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_10.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>国际影星&歌星</h5>
+                                        <p>凡妮莎•帕拉迪斯</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="swiper-slide">
+                        <ul class="clearfix">
+                            <li>
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_8.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>NBA球星</h5>
+                                        <p>托尼•帕克</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="img-right">
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_11.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>法国歌星&影星</h5>
+                                        <p>劳拉•斯梅特</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="swiper-slide">
+                        <ul class="clearfix">
+                            <li>
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_9.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>GUCCI老板</h5>
+                                        <p>佛朗索瓦•皮诺</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="img-right">
+                                <div class="item">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s2_img_12.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <h5>沙特阿拉伯</h5>
+                                        <p>皇室成员</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="s2-control not-select">
+                <div class="left"><p><</p></div>
+                <div class="middle">
+                    <!-- <p>|</p> -->
+                </div>
+                <div class="right"><p>></p></div>
+            </div>
+        </div>
+    </section>
+    <section class="s3">
+        <div class="container">
+            <div class="mode-title">
+                <div class="b-t">欢迎在全球顶级酒店体验崔佧</div>
+            </div>
+            <div class="s3-con">
+                <div class="item">
+                    <div class="item-l">
+                        <div class="img">
+                            <img src="__IMAGE__/brand_story_s3_img_1.jpg">
+                        </div>
+                        <div class="txt">
+                            <p>喜达屋酒店集团</p>
+                            <p class="small">STARWOOD HOTELS AND RESORTS</p>
+                        </div>
+                    </div>
+                    <div class="item-r clearfix">
+                        <div class="item-r-c clearfix">
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_1.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>里昂卡尔顿酒店</p>
+                                        <p class="small">LYON  HOTEL CARLTON</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_2.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>巴里尔皇家拉博勒酒店</p>
+                                        <p class="small">LA BAULE LE ROYAL</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_4.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>布里斯托尔酒店</p>
+                                        <p class="small">HOTEL LE BRISTOL SQUARCE</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_5.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>阿尔蒂尼城堡酒店</p>
+                                        <p class="small">MONTBAZON CHATEAU D’ARTIGNY</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_6.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>阿巴耶德塔罗尔酒店</p>
+                                        <p class="small">TALLOIRES ABBAYE  DE TALLOIRES</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_8.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>圣让卡法拉特酒店</p>
+                                        <p class="small">HOTEL SAINT JEAN CAP FARRAT</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_9.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>圣维克多山旅舍酒店</p>
+                                        <p class="small">LES LODGE SAINTE</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_10.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>马杰斯缇克酒店</p>
+                                        <p class="small">CANNES HOTEL MAJESTIC</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_11.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>拉波勒乐卡斯特玛丽露易丝酒店</p>
+                                        <p class="small">LA BAULE CASTEL MARIE LOUISE</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_12.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p> </p>
+                                        <p class="small">ANTIBES HOTEL DU CAP EDEN ROC</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_13.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>半岛酒店（香港）</p>
+                                        <p class="small">THE PENINSULA HOTEL</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_14.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>凯宾斯基</p>
+                                        <p class="small">KEMPINSKI HOTEL SINCE 1897</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_15.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>凯悦酒店集团</p>
+                                        <p class="small">HYATT HOTELS RESORTS</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_16.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>万豪酒店集团</p>
+                                        <p class="small">MARRIOTT HOTELS RESORTS SUITES</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_17.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>北京希尔顿</p>
+                                        <p class="small">HILTON BEIJING</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_19.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>丽笙酒店度假村</p>
+                                        <p class="small">RADISSON HOTELS RESORTS</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_20.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>四季酒店</p>
+                                        <p class="small">FOUR SEANSONS HOTEL</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="top">
+                                <div class="top-c">
+                                    <div class="img">
+                                        <img src="__IMAGE__/brand_story_s3_img_r_21.jpg">
+                                    </div>
+                                    <div class="txt">
+                                        <p>香格里拉酒店集团</p>
+                                        <p class="small">SHANGRI LA HOTELS RESORTS</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-container fix-swiper-container">
+                        <div class="swiper-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s4">
+        <div class="mode-title">
+            <div class="b-t">动态 · 见证</div>
+        </div>
+        <div class="container clearfix">
+            {{volist name="like_list" id="vo" empty="暂无数据"}}
+            <div class="item">
+                <a href="{{$vo.url}}">
+                    <div class="img" style="background-image: url({{$vo.head_img}});">
+                        <img src="{{$vo.head_img}}">
+                    </div>
+                    <div class="txt">
+                        <p>{{$vo.add_time_date}}</p>
+                        <p class="small">{{$vo.title}}</p>
+                    </div>
+                </a>
+            </div>
+            {{/volist}}
+        </div>
+    </section>
+</div>
+
+<!--底部-->
+{{include file="public/footer" /}}
+<!--底部-->
+
+<style>
+    .s2-swiper-container .swiper-container-horizontal .swiper-wrapper{
+        -webkit-transition-timing-function: ease-out;    /*之前是ease-out*/
+        -moz-transition-timing-function: ease-out;
+        -ms-transition-timing-function: ease-out;
+        -o-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
+        margin: 0 auto;
+    }
+    .swiper-container-free-mode > .swiper-wrapper {
+        -webkit-transition-timing-function: linear;    /*之前是ease-out*/
+        -moz-transition-timing-function: linear;
+        -ms-transition-timing-function: linear;
+        -o-transition-timing-function: linear;
+        transition-timing-function: linear;
+        margin: 0 auto;
+    }
+</style>
+<script>
+
+    $(function(){
+        $('.s3-con .item-r-c').on("mousewheel DOMMouseScroll", function (e) {
+            if( e && e.stopPropagation ){
+                e.stopPropagation(); 
+            } else {
+                window.event.cancelBubble = true; 
+            }
+        });
+        s2Swiper = new Swiper('.s2-swiper-container', {
+            // loop: true,
+            // speed: 1800,
+            // autoplay: false,
+            // navigation: {
+            //   nextEl: '.s2-control .right',
+            //   prevEl: '.s2-control .left',
+            // },
+            slidesPerView: 3,
+            loop: true,
+            spaceBetween: 0.8,
+            navigation: {
+                nextEl: '.s2-control .right',
+                prevEl: '.s2-control .left',
+            },
+            breakpoints: {
+                320: {  //当屏幕宽度大于等于320
+                    slidesPerView: 1,
+                    spaceBetween: 0
+                },
+                768: {  //当屏幕宽度大于等于768
+                    slidesPerView: 1,
+                    spaceBetween: 0
+                },
+                992: {  //当屏幕宽度大于等于1280
+                    slidesPerView: 3,
+                    spaceBetween: 0
+                }
+            }
+        });
+
+        var booktimer= 1600;
+
+        function resizeBook(numStr){
+            var numStr=numStr || 'single'; // single  double
+            $("#flipbook").turn({
+                width: '50%',
+                height: '100%',
+                display:numStr,
+                page:3,
+                duration:booktimer,
+                autoCenter: false,
+                // when: {
+                // turning: function(event, page, pageObject) {
+                //   // console.log('.bookpage'+page)
+                //   // window.setTimeout(function(){
+                //   //   $('#flipbook').find('.bookpage'+page).addClass('active')
+                //   // },booktimer/3)
+                //   // $('#flipbook .page-wrapper').find('.bookpage'+page).css({background:"#fff",opacity:0})
+                //   }
+                // }
+            });
+        }
+        var onOff= true;
+        var way = 1;
+        var bookouttimr= setInterval(function() {
+            if (way==1) {
+                $("#flipbook").turn("next");
+                var page=$("#flipbook").turn("page")
+                // window.setTimeout(function(){
+                //     $('#flipbook').find('.bookpage'+page).addClass('active')
+                // },booktimer/3)
+                if ($("#flipbook").turn("page")== 11) {
+                    $("#flipbook").turn("disable", true);
+                    way = 2;
+                    window.clearInterval(bookouttimr);
+                    bookouttimr=null;
+                    $("#flipbook").turn("options", {turnCorners: "tl,tr"});
+                }
+            } else {
+                $("#flipbook").turn("previous");
+                // $('#flipbook').find('.bookpage').each(function(){
+                //   $(this).removeClass('active')
+                // });
+                var page=$("#flipbook").turn("page")+1
+                window.setTimeout(function(){
+                    $('#flipbook').find('.bookpage'+page)
+                },booktimer/3)
+                if ($("#flipbook").turn("page")==3) {
+                    way = 1;
+                    $("#flipbook").turn("options", {turnCorners: "bl,br"});
+                }
+            }
+        }, 1000);
+        window.setTimeout(function(){
+            s3resizeHeight();
+        },10000)
+        function s3resizeHeight(){
+            var s3items= $('.s3-con .item-r .top')
+            var mbnum= $('.s3-con .item-l')[0].offsetHeight - 2*s3items[0].offsetHeight
+            s3items.each(function(index,item){
+                if(index<s3items.length-1){
+                    $(item).css({'margin-bottom': mbnum})
+                }else{
+                    $(item).css({'margin-bottom': 0})
+                }
+            })
+        }
+        window.onresize = function(){
+            s3resizeHeight();
+            if(onOff){
+                onOff= false;
+                $("#flipbook").turn("destroy");
+                window.clearInterval(bookouttimr);
+                bookouttimr=null;
+            }
+        };
+        imgloads(resizeBook);
+        function imgloads(callback,size){//判断图片是否已加载完毕
+            var imgs=$('.banner img');
+            var isover=false;//true加载完毕，false还有未加载的
+            var add=0;//循环当前次数
+            var size=size || 10;//循环次数
+            var jdtime=setInterval(function(){
+                isover=true;add++;
+                for(var i=0;i<imgs.length;i++){
+                    if(!imgs[i].complete){//还有没加载的图片
+                        isover=false;
+                    }
+                }
+                if(isover || add>=size){//加载完成，or超时
+                    clearInterval(jdtime);
+                    $('.banner .banner-txt-c').css('opacity',1);
+                    callback&&callback();
+                }
+            },50);
+        };
+        createAlertSwiper($('.s3-con .item-r .top'))
+        function createAlertSwiper($doms) {
+            $(".fix-swiper-container .swiper-wrapper").empty("");
+            for (var i = 0; i < $doms.length; i++) {
+                var imgSrc = $($($doms[i]).find('img')).attr("src");
+                var p1txt = $($($doms[i]).find('p').eq(0)).html();
+                var p2txt = $($($doms[i]).find('p').eq(1)).html();
+                pObj = document.createElement("div");
+                $(pObj).attr('class','swiper-slide')
+                $(pObj).css({
+                    'width': '100%',
+                    'height': '100%',
+                    'display': 'flex',
+                    'justify-content': 'center',
+                    'align-items': 'center'
+                })
+                var child = '<div class="swiper-slide" style="width: 100%; height: 100%; display: flex;justify-content: center; align-items: center;"><div class="top-c" style="width:100%;"><div class="img"><img src="'+imgSrc+'"></div><div class="txt"><p>'+p1txt+'</p><p class="small">'+p2txt+'</p></div></div></div>';
+                $(pObj).html(child)
+                $(".fix-swiper-container .swiper-wrapper").append(pObj);
+            }
+
+            alertSwiper = new Swiper('.fix-swiper-container', {
+                loop: true,
+                speed: 600,
+                autoplay: true,
+            });
+        };
+        var aboutSwiper1 = new Swiper('.about-swiper1', {
+            loop:true,
+            freeMode: true,
+            slidesPerView: 'auto',
+            speed:6000,//匀速时间
+            autoplay: {
+                delay: 0,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            },
+            mousewheel: {
+                sensitivity: 0.5,
+            },
+        });
+        var aboutSwiper2 = new Swiper('.about-swiper2', {
+            loop:true,
+            freeMode: true,
+            slidesPerView: 'auto',
+            speed:6000,//匀速时间
+            autoplay: {
+                delay: 0,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            },
+            mousewheel: {
+                sensitivity: 0.5,
+            },
+        });
+    });
+</script>
+</body>
+</html>

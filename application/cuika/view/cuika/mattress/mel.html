@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head -->
+{{include file="/public/head"}}
+<link rel="stylesheet" href="__CSS__/product-style.min.css">
+<!-- head -->
+
+<body>
+    <!-- 头部 -->
+    {{include file="/public/header"}}
+    <!-- 头部 -->
+
+    <!-- 梦境系列 -->
+    <main>
+        <div class="z-product-main z-product">
+            <section class="s1 container">
+                <div class="title">
+                    <h4 class="b-t">传承百年 温柔不变</h4>
+                    <p><span class="text-uppercase">Micro-Climats梦境系列</span></p>
+                    <p class="word">时针的齿轮不停转动，世界在变，你在变，TRECA想要给你的恒定温柔不变</p>
+                </div>
+            </section>
+
+            <section class="container">
+                <div class="banner cd-banner-mengjing1">
+                    <img src="__IMAGE__/cd_mengjing_banner.jpg" alt="banner图">
+                </div>
+                <div class="banner-cd">
+                    <div class="item">
+                      <div class="img">
+                        <img src="__IMAGE__/cd_mengjing_banner02.jpg" alt="详情图片">
+                      </div>
+                      <div class="test">
+                        <p>运用美国宇航局Outlast专利技术，主动调节睡眠微环境，为您提供恒温恒湿舒适睡眠体验</p>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div class="content-left">
+                      <!-- 左侧边栏 -->
+                      {{include file="/public/aside"}}
+                      <!-- 左侧边栏 -->
+                    </div>
+                    <div class="content-right">
+                        {{if !empty($data_list)}}
+                        {{foreach $data_list.data as $goods}}
+                        <div class="item">
+                            <div class="item-top">
+                                <div class="img">
+                                    <a href="/product/detail/{{$goods.id}}">
+                                        <img src="{{$goods.images}}" alt="产品图片">
+                                    </a>
+                                </div>
+                                <div class="word">
+                                    <p>{{$goods.title}}</p>
+                                    <p>¥{{$goods.price}}</p>
+                                </div>
+                            </div>
+                            <div class="item-desc">
+                                {{if !empty($goods.hardness)}} <p>硬度：{{$goods.hardness}}</p> {{/if}}
+                                {{if !empty($goods.height)}} <p>高度：{{$goods.height}}</p> {{/if}}
+                                {{if !empty($goods.winter_fabrics)}} <p>夏季面：{{$goods.summer_fabrics}}</p> {{/if}}
+                                {{if !empty($goods.summer_fabrics)}} <p class="winter">冬季面：{{$goods.winter_fabrics}}</p> {{/if}}
+                            </div>
+                            <div class="item-bottom">
+                                <div class="shop"><p class="btn" data-goodsid={{$goods.id}}>加入购物袋</p></div>
+                                <a href="/product/detail/{{$goods.id}}" class="more">进一步了解></a>
+                
+                                <div class="success-msg">
+                                    <h3 class="title">成功加入购物车</h3>
+                                    <p>您可以<a href="/cart" target="_blank">去购物车结算</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        {{/foreach}}
+                        {{/if}}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- 梦境系列 -->
+
+
+    <!-- 底部 -->
+    {{include file="/public/footer"}}
+    <!-- 底部 -->
+
+    <script>
+
+
+        $('.nav-list .nav-menu .nav-menu-btn').on("click", function () {
+            let idx = $(this).index();
+            $(this).find('.icon-height').toggleClass('down');
+            $(this).find('.icon-width').toggleClass('down');
+
+            const navSon = $(this).parent().find('.nav-son-list');
+            if (navSon.is(":hidden")) {
+                navSon.slideDown();
+            } else {
+                navSon.slideUp();
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>

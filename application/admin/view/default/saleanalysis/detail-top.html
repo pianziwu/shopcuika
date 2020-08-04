@@ -1,0 +1,154 @@
+{{include file="public/header" /}}
+
+<!-- right content start  -->
+<div class="content-right">
+    <div class="content">
+        <div class="warpper">
+            <div class="tabs_info">
+                <ul>
+                    <li><a href="admin.php?s=/saleanalysis/detailIndex">销售明细</a></li>
+                    <li class="curr"><a href="admin.php?s=/saleanalysis/detailTop">销售排行</a></li>
+                    <li><a href="admin.php?s=/saleanalysis/detailBasic">销售概况</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="explanation" id="explanation">
+                    <div class="ex_tit"><i class="sc_icon"></i>
+                        <h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    </div>
+                    <ul>
+                        <li>统计所有销售统计信息。</li>
+                        <li>根据订单时间、订单类型、发货状态等筛选出某个时间段的订单信息。</li>
+                    </ul>
+                </div>
+                <div class="flexilist mt15">
+                    <div class="stat_order_search stat_order_search2">
+                        <form class="am-form form-validation form-search" method="post" action="{{:MyUrl('admin.php?s=/user_count/memberRank')}}" request-type="form">
+                            <table class="so-list more-where">
+                                <tbody>
+                                    <tr>
+                                        <td class="time">
+                                            <span>下单时间：</span>
+                                            <span>
+                                                <input type="text" autocomplete="off" name="start_time" class="am-form-field am-input-sm am-radius Wdate" placeholder="起始时间" value="{{if !empty($params.start_time)}}{{$params.start_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM-dd 00:00:00'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                            </span>
+                                            <em class="text-grey">~</em>
+                                            <span>
+                                                <input type="text" autocomplete="off" name="end_time" class="am-form-field am-input-sm am-radius Wdate" placeholder="结束时间" value="{{if !empty($params.end_time)}}{{$params.end_time}}{{/if}}" data-validation-message="日期格式有误" onclick="WdatePicker({firstDayOfWeek:1,dateFmt:'yyyy-MM-dd 00:00:00'})" autocomplete="off" /><i class="am-icon-calendar"></i>
+                                            </span>
+                                        </td>
+                                        <td class="search-show">
+                                            <a class="search-btn am-btn am-btn-primary am-radius am-btn-xs btn-loading-example" data-am-loading="{spinner:'circle-o-notch', loadingText:'搜索中...'}">搜索</a>
+                                            <a href="/admin.php?s=/saleanalysis/detailTop" class="am-btn am-btn-warning am-radius am-btn-sm reset-submit">清除条件</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="query_result_tops">
+                        {{if empty($data_list.data)}}
+                            <div class="analysis-table-no">
+                                <div class="txt">
+                                    <i class="am-icon-warning"></i> 没有相关数据
+                                </div>
+                            </div>
+                            {{else /}}
+                            <div class="query_result">
+                                <div class="common-content">
+                                    <div class="switch_info">
+                                        <div class="query_result mt20">
+                                            <div class="common-head">
+                                                <div class="fl">
+                                                    <div class="fbutton m0" id="fbutton_1">
+                                                        <a href="/admin.php?s=/saleanalysis/csvtop.html" target="_blank">
+                                                            <div class="csv" title="导出数据"><span></i>导出列表</span></div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="refresh">
+                                                    <div class="refresh_span">共{{$data_list.total}}条记录</div>
+                                                </div>
+                                            </div>
+                                            <div class="list-div" id="listDiv">
+                                                <table class="am-table am-table-striped am-table-hover am-text-middle am-margin-top-sm goods-list">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>排行</th>
+                                                            <th>商品名称</th>
+                                                            <th>销售量</th>
+                                                            <th>销售额</th>
+                                                            <th>均价</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {{foreach $data_list['data'] as $k => $v}}
+                                                            <tr id="data-list">
+                                                                <td>{{$k+1}}</td>
+                                                                <td>{{$v.title}}</td>
+                                                                <td>{{$v.buy_number}}</td>
+                                                                <td>{{$v.total_price}}</td>
+                                                                <td>{{$v.avg_price}}</td>
+                                                            </tr>
+                                                        {{/foreach}}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div>
+
+                    </div>
+                    <!-- page start -->
+                    {{if !empty($data_list.data)}}
+                        {{$page_html|raw}}
+                    {{/if}}
+                    <!-- page end -->
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- right content end  -->
+        
+<!-- footer start -->
+{{include file="public/footer" /}}
+<!-- footer end -->
+
+<script type="text/javascript">
+    function turnTime(val){
+		var date = new Date(val);
+    	return date.getTime();
+	};
+    $('.search-btn').on('click',function(){
+        var params = $(".form-search").serializeArray();
+        var values = {};
+        var x;
+        for (x in params) {
+          values[params[x].name] = params[x].value;
+        };
+        if(values.start_time || values.end_time){
+			var s_time= values.start_time ? turnTime(values.start_time) : 0;
+			var e_time= values.end_time ? turnTime(values.end_time) : 0;
+			if(e_time< s_time){
+				Prompt('开始时间必须小于结束时间!');
+				return;
+			}
+		};
+        window.location.href= 'admin.php?s=/saleanalysis/detailTop&start_time='+values.start_time+'&end_time='+values.end_time;
+    });
+    $('#explanationZoom').on('click',function(){
+        if($(this).hasClass('shopUp')){
+            $(this).removeClass('shopUp');
+            $(this).parents('.ex_tit').css({'margin-bottom':'10px'}).siblings('ul').show();
+            $(this).parents('.explanation').css({'width':'calc(100% - 28px)'});
+        }else{
+            $(this).addClass('shopUp');
+            $(this).parents('.ex_tit').css({'margin-bottom':'0'}).siblings('ul').hide();
+            $(this).parents('.explanation').css({'width':'126px'});
+        };
+    });
+</script>
